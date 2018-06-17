@@ -70,7 +70,6 @@ namespace Patcher.Patching
 
             if (!File.Exists(newFilePath))
             {
-
                 File.Move(gameAssemblyPath, newFilePath);
             }
             #endif
