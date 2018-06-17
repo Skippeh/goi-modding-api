@@ -5,7 +5,7 @@ namespace ModAPI
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static void Main()
         {
             var harmony = HarmonyInstance.Create("com.goimodapi");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
