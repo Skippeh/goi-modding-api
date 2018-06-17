@@ -262,6 +262,8 @@
     <Compile Include="Plugins\PluginOptions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Types\LayerType.cs" />
+    <Compile Include="Types\SceneType.cs" />
     <Compile Include="Windows\WinNative.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

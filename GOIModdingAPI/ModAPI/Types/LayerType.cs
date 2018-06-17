@@ -1,0 +1,77 @@
+﻿using System;
+
+namespace ModAPI.Types
+{
+    public enum LayerType
+    {
+        Default,
+        TransparentFX,
+        IgnoreRaycast,
+        Layer3,
+        Water,
+        UI,
+        Layer6,
+        Layer7,
+        Player,
+        Pole,
+        Terrain,
+        Sky,
+        Background,
+        FogVolumeShadowCaster,
+        FogVolume,
+        FogVolumeSurrogate,
+        Tree,
+        FogVolumeUniform,
+        Rope,
+        Illuminator,
+        Bat,
+        Layer21,
+        Layer22,
+        Layer23,
+        Layer24,
+        Layer25,
+        Layer26,
+        Layer27,
+        Layer28,
+        Layer29,
+        Layer30,
+        Layer31
+    }
+
+    [Flags]
+    public enum LayerTypeFlags
+    {
+        Default = 1 << 0,
+        TransparentFX = 1 << 1,
+        IgnoreRaycast = 1 << 2,
+        Layer3 = 1 << 3,
+        Water = 1 << 4,
+        UI = 1 << 5,
+        Layer6 = 1 << 6,
+        Layer7 = 1 << 7,
+        Player = 1 << 8,
+        Pole = 1 << 9,
+        Terrain = 1 << 10,
+        Sky = 1 << 11,
+        Background = 1 << 12,
+        FogVolumeShadowCaster = 1 << 13,
+        FogVolume = 1 << 14,
+        FogVolumeSurrogate = 1 << 15,
+        Tree = 1 << 16,
+        FogVolumeUniform = 1 << 17,
+        Rope = 1 << 18,
+        Illuminator = 1 << 19,
+        Bat = 1 << 20,
+        Layer21 = 1 << 21,
+        Layer22 = 1 << 22,
+        Layer23 = 1 << 23,
+        Layer24 = 1 << 24,
+        Layer25 = 1 << 25,
+        Layer26 = 1 << 26,
+        Layer27 = 1 << 27,
+        Layer28 = 1 << 28,
+        Layer29 = 1 << 29,
+        Layer30 = 1 << 30,
+        Layer31 = 1 << 31,
+    }
+}
