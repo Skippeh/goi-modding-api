@@ -13,15 +13,16 @@ namespace Patcher.Patching.Patches
             var method = GetStartMethodDefinition(gameModule);
             var il = method.Body.GetILProcessor();
 
-            Instruction maybeCall = il.Body.Instructions[il.Body.Instructions.Count - 2];
-
-            if (maybeCall.OpCode.Code == Code.Call)
+            foreach (var instruction in il.Body.Instructions)
             {
-                var methodReference = (MethodReference) maybeCall.Operand;
-
-                if (methodReference.DeclaringType.FullName == "ModAPI.Program")
+                if (instruction.OpCode.Code == Code.Call)
                 {
-                    return true;
+                    var methodReference = (MethodReference) instruction.Operand;
+
+                    if (methodReference.DeclaringType.FullName == "ModAPI.Program")
+                    {
+                        return true;
+                    }
                 }
             }
             
