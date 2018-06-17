@@ -2,6 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModAPI", "ModAPI\ModAPI.csproj", "{1F911935-4D17-42F1-B32A-0357191509E5}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Patcher", "Patcher\Patcher.csproj", "{6B57E8CC-F06F-49CB-B22E-EE4B707AC7D2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1F911935-4D17-42F1-B32A-0357191509E5} = {1F911935-4D17-42F1-B32A-0357191509E5}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +17,15 @@ Global
 		{1F911935-4D17-42F1-B32A-0357191509E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F911935-4D17-42F1-B32A-0357191509E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F911935-4D17-42F1-B32A-0357191509E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B57E8CC-F06F-49CB-B22E-EE4B707AC7D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B57E8CC-F06F-49CB-B22E-EE4B707AC7D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B57E8CC-F06F-49CB-B22E-EE4B707AC7D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B57E8CC-F06F-49CB-B22E-EE4B707AC7D2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {96DFFEBC-65B9-420A-80AD-30FBE310181E}
 	EndGlobalSection
 EndGlobal
