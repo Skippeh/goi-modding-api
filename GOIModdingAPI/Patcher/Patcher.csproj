@@ -7,6 +7,9 @@
     <PackageReference Include="Mono.Cecil" Version="0.10.0" />
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /y /i &quot;$(SolutionDir)ModAPI\bin\$(ConfigurationName)\*.*&quot; &quot;$(TargetDir)&quot;" />
+    <ItemGroup>
+      <ModAPIFiles Include="$(SolutionDir)ModAPI/bin/$(ConfigurationName)/ModAPI.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ModAPIFiles)" DestinationFiles="@(ModAPIFiles->'$(TargetDir)\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
 </Project>
