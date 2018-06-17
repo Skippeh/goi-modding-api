@@ -267,6 +267,14 @@
     <Compile Include="Types\SceneType.cs" />
     <Compile Include="Windows\WinNative.cs" />
   </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <ItemGroup>
+      <ModAPIFiles Include="$(TargetDir)0Harmony.dll" />
+      <ModAPIFiles Include="$(TargetDir)ModAPI.dll" />
+      <ModAPIFiles Include="$(TargetDir)ModAPI.pdb" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ModAPIFiles)" DestinationFiles="@(ModAPIFiles->'$(GameDirectory)\GettingOverIt_Data\Managed\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)/DevVars.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
