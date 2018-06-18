@@ -139,6 +139,11 @@ namespace ModAPI.Plugins
                         return;
                     }
 
+                    if (!PluginHasValidConstructor(pluginType))
+                    {
+                        APIHost.Logger.LogError($"Failed to load plugin {pluginName}. There is no constructor with 0 parameters.");
+                    }
+
                     plugin.Author = pluginAttribute.Author;
                     plugin.Name = pluginAttribute.Name;
                     plugin.ShortDescription = pluginAttribute.ShortDescription ?? "No description available.";
@@ -187,6 +192,11 @@ namespace ModAPI.Plugins
             }
 
             return true;
+        }
+
+        private bool PluginHasValidConstructor(Type type)
+        {
+            return type.GetConstructor(new Type[0]) != null;
         }
 
         private void UnloadAssembly(string name)
