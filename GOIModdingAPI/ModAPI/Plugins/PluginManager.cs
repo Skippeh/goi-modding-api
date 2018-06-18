@@ -149,9 +149,11 @@ namespace ModAPI.Plugins
                     plugin.ShortDescription = pluginAttribute.ShortDescription ?? "No description available.";
                     plugin.Version = plugin.Assembly.GetName().Version;
                     plugin.Plugin = (Plugin) Activator.CreateInstance(pluginType);
-
+                    
                     plugins.Add(key, plugin);
                     plugin.Plugin.Initialize();
+
+                    APIHost.Logger.LogDebug($"Loaded plugin {plugin.Name} by {plugin.Author} ({plugin.ShortDescription}).");
                 }
                 catch (Exception ex)
                 {
