@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
+using System.Linq;
+using System.Net;
 using System.Reflection;
+using FluffyUnderware.DevTools.Extensions;
 using I2.Loc;
 using ModAPI.API;
 using ModAPI.Logging;
+using ModAPI.Types;
 
 namespace ModAPI.Plugins
 {
@@ -83,12 +88,17 @@ namespace ModAPI.Plugins
         {
             lock (this)
             {
+                string pluginName = Path.GetFileNameWithoutExtension(name);
                 string key = name.ToLowerInvariant();
 
                 if (plugins.ContainsKey(key))
                     return;
 
-                APIHost.Logger.LogDebug($"Loading plugin: {Path.GetFileNameWithoutExtension(name)}");
+                if (key.Any(ch => ch.ToString().Trim() == string.Empty))
+                {
+                    APIHost.Logger.LogError($"Failed to load plugin {pluginName}. The file name contains whitespace.");
+                    return;
+                }
 
                 var plugin = new PluginInstance();
 
@@ -96,18 +106,87 @@ namespace ModAPI.Plugins
                 {
                     plugin.Assembly = Assembly.LoadFrom(Path.Combine(Options.PluginsDirectory, name));
 
-                    foreach (Type type in plugin.Assembly.GetExportedTypes())
+                    Type pluginType;
+
+                    
+                    try
                     {
-                        // todo: check for valid plugin type
+                        pluginType = plugin.Assembly.GetExportedTypes().SingleOrDefault(TypeIsValidPlugin);
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        APIHost.Logger.LogError($"Failed to load plugin {pluginName}. It contains more than a single plugin.");
+                        return;
                     }
 
+                    if (pluginType == null)
+                    {
+                        APIHost.Logger.LogError(
+                            $"Failed to load plugin {pluginName}. Could not find a valid plugin type. Make sure your plugin class is public and that you've added the PluginAttribute.");
+                        return;
+                    }
+                    else if (pluginType.Name != pluginName)
+                    {
+                        APIHost.Logger.LogError($"Failed to load plugin {pluginName}. The plugin class' name needs to be {pluginName}.");
+                        return;
+                    }
+
+                    var pluginAttribute = pluginType.GetCustomAttribute<PluginAttribute>();
+
+                    if (!PluginTypeHasValidAttribute(pluginAttribute))
+                    {
+                        APIHost.Logger.LogError($"Failed to load plugin {pluginName}. The reason is above this message.");
+                        return;
+                    }
+
+                    plugin.Author = pluginAttribute.Author;
+                    plugin.Name = pluginAttribute.Name;
+                    plugin.ShortDescription = pluginAttribute.ShortDescription ?? "No description available.";
+                    plugin.Version = plugin.Assembly.GetName().Version;
+                    plugin.Plugin = (Plugin) Activator.CreateInstance(pluginType);
+
                     plugins.Add(key, plugin);
+                    plugin.Plugin.Initialize();
                 }
                 catch (Exception ex)
                 {
                     APIHost.Logger.LogException(ex, "Failed to load plugin.");
                 }
             }
+        }
+
+        private bool TypeIsValidPlugin(Type type)
+        {
+            if (!typeof(Plugin).IsAssignableFrom(type))
+                return false;
+
+            if (type.GetCustomAttribute<PluginAttribute>() == null)
+                return false;
+
+            return true;
+        }
+
+        private bool PluginTypeHasValidAttribute(PluginAttribute attribute)
+        {
+            if (string.IsNullOrEmpty(attribute.Name?.Trim()))
+            {
+                APIHost.Logger.LogError("The plugin name is empty.");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(attribute.Author?.Trim()))
+            {
+                APIHost.Logger.LogError("The plugin author is empty.");
+                return false;
+            }
+
+            if (attribute.ShortDescription != null && attribute.ShortDescription == string.Empty)
+            {
+                APIHost.Logger.LogError("The plugin short description is empty (use null instead).");
+                return false;
+            }
+
+            return true;
         }
 
         private void UnloadAssembly(string name)
@@ -119,7 +198,20 @@ namespace ModAPI.Plugins
                 if (!plugins.ContainsKey(name))
                     return;
 
-                APIHost.Logger.LogDebug($"Unloading plugin: {Path.GetFileNameWithoutExtension(name)}");
+                var plugin = plugins[name];
+
+                APIHost.Logger.LogDebug($"Unloading plugin: {plugin.Name}");
+            }
+        }
+
+        public void OnNewScene(SceneType oldSceneType, SceneType sceneType)
+        {
+            lock (this)
+            {
+                foreach (var kv in plugins)
+                {
+                    kv.Value.Plugin.OnNewScene(oldSceneType, sceneType);
+                }
             }
         }
     }

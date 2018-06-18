@@ -258,6 +258,9 @@
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Logging\LogLevel.cs" />
     <Compile Include="Logging\LogOptions.cs" />
+    <Compile Include="Plugins\Events\SceneChangedEvent.cs" />
+    <Compile Include="Plugins\Plugin.cs" />
+    <Compile Include="Plugins\PluginAttribute.cs" />
     <Compile Include="Plugins\PluginInstance.cs" />
     <Compile Include="Plugins\PluginManager.cs" />
     <Compile Include="Plugins\PluginOptions.cs" />
