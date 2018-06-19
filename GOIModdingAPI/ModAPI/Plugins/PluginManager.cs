@@ -244,7 +244,7 @@ namespace ModAPI.Plugins
             
             foreach (var plugin in tickingPlugins)
             {
-                plugin.Tick();
+                plugin.OnTick();
             }
         }
         internal void EnableTicking(Plugin plugin)

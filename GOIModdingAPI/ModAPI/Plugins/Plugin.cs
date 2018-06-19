@@ -36,6 +36,10 @@ namespace ModAPI.Plugins
         {
         }
 
+        protected virtual void Tick()
+        {
+        }
+
         internal void OnNewScene(SceneType oldSceneType, SceneType sceneType)
         {
             SceneChanged?.Invoke(new SceneChangedEventArgs(oldSceneType, sceneType));
@@ -52,8 +56,9 @@ namespace ModAPI.Plugins
             Initialize();
         }
 
-        public virtual void Tick()
+        internal void OnTick()
         {
+            Tick();
         }
     }
 }
