@@ -261,6 +261,7 @@
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Logging\LogLevel.cs" />
     <Compile Include="Logging\LogOptions.cs" />
+    <Compile Include="Patches\LoadingSavePatch.cs" />
     <Compile Include="Plugins\Events\PluginDestroyingEvent.cs" />
     <Compile Include="Plugins\Events\SceneChangedEvent.cs" />
     <Compile Include="Plugins\Plugin.cs" />
