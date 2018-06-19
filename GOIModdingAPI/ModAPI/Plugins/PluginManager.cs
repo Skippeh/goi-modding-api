@@ -139,7 +139,7 @@ namespace ModAPI.Plugins
                 }
                 else if (pluginType.Name != pluginName)
                 {
-                    APIHost.Logger.LogError($"Failed to load plugin {pluginName}. The plugin class' name needs to be {pluginName}.");
+                    APIHost.Logger.LogError($"Failed to load plugin {pluginName}. The plugin's class name needs to be {pluginName}.");
                     return null;
                 }
 
