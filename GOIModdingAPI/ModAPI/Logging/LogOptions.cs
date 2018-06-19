@@ -2,7 +2,7 @@
 {
     public sealed class LogOptions
     {
-        public bool LogToConsole { get; set; } = true;
-        public string LogDirectory { get; set; } = null;
+        public bool LogToConsole { get; set; }
+        public string LogDirectory { get; set; }
     }
 }

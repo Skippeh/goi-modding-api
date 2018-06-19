@@ -2,6 +2,6 @@
 {
     public sealed class PluginOptions
     {
-        public string PluginsDirectory { get; set; } = "Plugins";
+        public string PluginsDirectory { get; set; }
     }
 }

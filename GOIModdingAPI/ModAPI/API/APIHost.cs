@@ -30,8 +30,11 @@ namespace ModAPI.API
             var apiObject = new GameObject("ModAPI");
             apiComponent = apiObject.AddComponent<APIHostComponent>();
             GameObject.DontDestroyOnLoad(apiObject);
-            
-            Plugins = new PluginManager();
+
+            Plugins = new PluginManager(new PluginOptions
+            {
+                PluginsDirectory = "Plugins"
+            });
             Plugins.LoadPlugins();
             Plugins.StartListening();
         }

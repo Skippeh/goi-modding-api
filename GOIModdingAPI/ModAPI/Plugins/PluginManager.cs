@@ -28,10 +28,6 @@ namespace ModAPI.Plugins
         private Queue<string> loadQueue = new Queue<string>();
         private Queue<string> unloadQueue = new Queue<string>();
         
-        public PluginManager() : this(new PluginOptions())
-        {
-        }
-
         public PluginManager(PluginOptions options)
         {
             Options = options;
