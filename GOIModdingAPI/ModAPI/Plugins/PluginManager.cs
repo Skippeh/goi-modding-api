@@ -101,20 +101,18 @@ namespace ModAPI.Plugins
             }
         }
 
-        private void LoadAssembly(string name)
-        {
-            lock (this)
+        private PluginInstance LoadAssembly(string name)
         {
             string pluginName = Path.GetFileNameWithoutExtension(name);
             string key = name.ToLowerInvariant();
 
             if (plugins.ContainsKey(key))
-                    return;
+                return plugins[key];
 
             if (key.Any(ch => ch.ToString().Trim() == string.Empty))
             {
                 APIHost.Logger.LogError($"Failed to load plugin {pluginName}. The file name contains whitespace.");
-                    return;
+                return null;
             }
 
             var plugin = new PluginInstance();
@@ -133,19 +131,19 @@ namespace ModAPI.Plugins
                 catch (InvalidOperationException)
                 {
                     APIHost.Logger.LogError($"Failed to load plugin {pluginName}. It contains more than a single plugin.");
-                        return;
+                    return null;
                 }
 
                 if (pluginType == null)
                 {
                     APIHost.Logger.LogError(
                         $"Failed to load plugin {pluginName}. Could not find a valid plugin type. Make sure your plugin class is public and that you've added the PluginAttribute.");
-                        return;
+                    return null;
                 }
                 else if (pluginType.Name != pluginName)
                 {
                     APIHost.Logger.LogError($"Failed to load plugin {pluginName}. The plugin class' name needs to be {pluginName}.");
-                        return;
+                    return null;
                 }
 
                 var pluginAttribute = pluginType.GetCustomAttribute<PluginAttribute>();
@@ -153,7 +151,7 @@ namespace ModAPI.Plugins
                 if (!PluginTypeHasValidAttribute(pluginAttribute))
                 {
                     APIHost.Logger.LogError($"Failed to load plugin {pluginName}. The reason is above this message.");
-                        return;
+                    return null;
                 }
 
                 if (!PluginHasValidConstructor(pluginType))
@@ -171,11 +169,12 @@ namespace ModAPI.Plugins
                 plugin.Plugin.OnInitialize();
 
                 APIHost.Logger.LogDebug($"Loaded plugin {plugin.Name} by {plugin.Author} ({plugin.ShortDescription}).");
+                return plugin;
             }
             catch (Exception ex)
             {
                 APIHost.Logger.LogException(ex, "Failed to load plugin.");
-                }
+                return null;
             }
         }
 
