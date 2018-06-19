@@ -25,6 +25,8 @@ namespace ModAPI.API
             Application.logMessageReceived += OnLogMessageReceived;
             SceneManager.activeSceneChanged += OnNewScene;
 
+            Application.runInBackground = true; // Without this plugin hotloading could be unpredictable in certain cases.
+
             var apiObject = new GameObject("ModAPI");
             apiComponent = apiObject.AddComponent<APIHostComponent>();
             GameObject.DontDestroyOnLoad(apiObject);
