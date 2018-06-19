@@ -254,7 +254,7 @@ namespace ModAPI.Plugins
             }
         }
 
-        internal void TickPlugins()
+        internal void Tick()
         {
             ProcessPluginQueues();
             
