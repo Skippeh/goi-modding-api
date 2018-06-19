@@ -13,7 +13,7 @@ namespace ModAPI.API
             LoadingSave?.Invoke(new LoadingSaveEventArgs(saveState));
         }
 
-        public void OnSaving(SaveState saveState)
+        internal void OnSaving(SaveState saveState)
         {
             Saving?.Invoke(new SavingEventArgs(saveState));
         }
