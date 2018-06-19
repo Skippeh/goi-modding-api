@@ -7,7 +7,7 @@ using ModAPI.Windows;
 
 namespace ModAPI
 {
-    public class Program
+    internal class Program
     {
         private static StreamWriter consoleWriter;
         
