@@ -13,6 +13,9 @@ namespace ModAPI.Plugins
             get => shouldTick;
             protected set
             {
+                if (value == shouldTick)
+                    return;
+                
                 if (value)
                     APIHost.Plugins.EnableTicking(this);
                 else
