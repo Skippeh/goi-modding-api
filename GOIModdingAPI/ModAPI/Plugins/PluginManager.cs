@@ -20,6 +20,7 @@ namespace ModAPI.Plugins
 
         private readonly FileSystemWatcher fileWatcher;
         private readonly Dictionary<string, PluginInstance> plugins = new Dictionary<string, PluginInstance>();
+        private readonly List<Plugin> tickingPlugins = new List<Plugin>();
         
         public PluginManager() : this(new PluginOptions())
         {
@@ -227,6 +228,27 @@ namespace ModAPI.Plugins
                     kv.Value.Plugin.OnNewScene(oldSceneType, sceneType);
                 }
             }
+        }
+
+        internal void TickPlugins()
+        {
+            foreach (var plugin in tickingPlugins)
+            {
+                plugin.Tick();
+            }
+        }
+
+        internal void EnableTicking(Plugin plugin)
+        {
+            if (tickingPlugins.Contains(plugin))
+                return;
+            
+            tickingPlugins.Add(plugin);
+        }
+
+        internal void DisableTicking(Plugin plugin)
+        {
+            tickingPlugins.Remove(plugin);
         }
     }
 }

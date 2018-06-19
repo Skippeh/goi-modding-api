@@ -1,11 +1,26 @@
-﻿using ModAPI.Plugins.Events;
+﻿using ModAPI.API;
+using ModAPI.Plugins.Events;
 using ModAPI.Types;
 
 namespace ModAPI.Plugins
 {
     public abstract class Plugin
     {
-        public abstract bool ShouldTick { get; }
+        private bool shouldTick = false;
+        
+        public bool ShouldTick
+        {
+            get => shouldTick;
+            protected set
+            {
+                if (value)
+                    APIHost.Plugins.EnableTicking(this);
+                else
+                    APIHost.Plugins.DisableTicking(this);
+                
+                shouldTick = value;
+            }
+        }
 
         public event SceneChangedEventHandler SceneChanged;
         public event PluginDestroyingEventHandler PluginDestroying;
