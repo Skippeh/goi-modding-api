@@ -123,7 +123,6 @@ namespace ModAPI.Plugins
 
                 Type pluginType;
 
-
                 try
                 {
                     pluginType = plugin.Assembly.GetExportedTypes().SingleOrDefault(TypeIsValidPlugin);
@@ -157,6 +156,20 @@ namespace ModAPI.Plugins
                 if (!PluginHasValidConstructor(pluginType))
                 {
                     APIHost.Logger.LogError($"Failed to load plugin {pluginName}. There is no constructor with 0 parameters.");
+                }
+
+                if (pluginAttribute.Dependencies?.Length > 0)
+                {
+                    APIHost.Logger.LogDebug($"Loading {pluginAttribute.Dependencies.Length} dependant plugin{(pluginAttribute.Dependencies.Length == 1 ? "" : "s")}...");
+
+                    foreach (string dependency in pluginAttribute.Dependencies)
+                    {
+                        if (LoadAssembly(dependency) == null)
+                        {
+                            APIHost.Logger.LogError($"Failed to load plugin {pluginName}. A dependant plugin failed to load.");
+                            return null;
+                        }
+                    }
                 }
 
                 plugin.Author = pluginAttribute.Author;

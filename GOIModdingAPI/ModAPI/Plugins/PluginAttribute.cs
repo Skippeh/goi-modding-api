@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ModAPI.Plugins
 {
@@ -8,5 +9,6 @@ namespace ModAPI.Plugins
         public string Name { get; set; }
         public string ShortDescription { get; set; }
         public string Author { get; set; }
+        public string[] Dependencies { get; set; }
     }
 }
