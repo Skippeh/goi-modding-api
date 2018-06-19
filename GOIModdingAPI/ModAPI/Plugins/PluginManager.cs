@@ -171,6 +171,11 @@ namespace ModAPI.Plugins
                 APIHost.Logger.LogDebug($"Loaded plugin {plugin.Name} by {plugin.Author} ({plugin.ShortDescription}).");
                 return plugin;
             }
+            catch (FileNotFoundException)
+            {
+                APIHost.Logger.LogError($"Failed to load plugin {pluginName}. The file could not be found.");
+                return null;
+            }
             catch (Exception ex)
             {
                 APIHost.Logger.LogException(ex, $"Failed to load plugin {pluginName}.");
