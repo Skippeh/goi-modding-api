@@ -9,10 +9,9 @@ namespace ModAPI.Patches
     [HarmonyPatch("Save")]
     internal static class SavingGamePatch
     {
-        private static SaveState Postfix(SaveState __result)
+        private static void Postfix(SaveState __result)
         {
             APIHost.Events.OnSaving(__result);
-            return __result;
         }
     }
 }
