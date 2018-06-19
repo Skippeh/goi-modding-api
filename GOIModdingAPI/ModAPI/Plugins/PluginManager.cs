@@ -173,7 +173,7 @@ namespace ModAPI.Plugins
             }
             catch (Exception ex)
             {
-                APIHost.Logger.LogException(ex, "Failed to load plugin.");
+                APIHost.Logger.LogException(ex, $"Failed to load plugin {pluginName}.");
                 return null;
             }
         }
