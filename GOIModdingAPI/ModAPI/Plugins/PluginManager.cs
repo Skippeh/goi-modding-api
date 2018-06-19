@@ -9,6 +9,7 @@ using FluffyUnderware.DevTools.Extensions;
 using I2.Loc;
 using ModAPI.API;
 using ModAPI.Logging;
+using ModAPI.Plugins.Events;
 using ModAPI.Types;
 
 namespace ModAPI.Plugins
@@ -201,7 +202,7 @@ namespace ModAPI.Plugins
             return type.GetConstructor(new Type[0]) != null;
         }
 
-        private void UnloadAssembly(string name)
+        private void UnloadAssembly(string name, PluginDestroyReason reason = PluginDestroyReason.Unloaded)
         {
             lock (this)
             {
@@ -211,6 +212,7 @@ namespace ModAPI.Plugins
                     return;
 
                 var plugin = plugins[name];
+                plugin.Plugin.OnPluginDestroying(reason);
 
                 APIHost.Logger.LogDebug($"Unloading plugin: {plugin.Name}");
             }
