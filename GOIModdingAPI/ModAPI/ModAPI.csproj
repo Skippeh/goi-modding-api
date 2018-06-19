@@ -256,6 +256,8 @@
   <ItemGroup>
     <Compile Include="API\APIHost.cs" />
     <Compile Include="API\APIHostComponent.cs" />
+    <Compile Include="API\Events\LoadingSaveEvent.cs" />
+    <Compile Include="API\GameEvents.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Logging\LogLevel.cs" />
     <Compile Include="Logging\LogOptions.cs" />

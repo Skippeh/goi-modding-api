@@ -11,6 +11,7 @@ namespace ModAPI.API
     {
         public static Logging.Logger Logger { get; private set; }
         public static PluginManager Plugins { get; private set; }
+        public static GameEvents Events { get; private set; }
 
         private static APIHostComponent apiComponent;
         
