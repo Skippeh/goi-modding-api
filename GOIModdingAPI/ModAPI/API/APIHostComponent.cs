@@ -2,7 +2,7 @@
 
 namespace ModAPI.API
 {
-    public class APIHostComponent : MonoBehaviour
+    internal class APIHostComponent : MonoBehaviour
     {
         private void Update()
         {
