@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using FluffyUnderware.DevTools.Extensions;
+using Harmony;
 using I2.Loc;
 using ModAPI.API;
 using ModAPI.Logging;
@@ -16,11 +17,16 @@ namespace ModAPI.Plugins
 {
     public sealed class PluginManager
     {
-        public PluginOptions Options { get; private set; }
+        public List<PluginInstance> Plugins => plugins.Values.ToList();
+        
+        internal PluginOptions Options { get; private set; }
 
         private readonly FileSystemWatcher fileWatcher;
         private readonly Dictionary<string, PluginInstance> plugins = new Dictionary<string, PluginInstance>();
         private readonly List<Plugin> tickingPlugins = new List<Plugin>();
+
+        private Queue<string> loadQueue = new Queue<string>();
+        private Queue<string> unloadQueue = new Queue<string>();
         
         public PluginManager() : this(new PluginOptions())
         {
@@ -59,7 +65,10 @@ namespace ModAPI.Plugins
 
         private void OnFileCreated(object sender, FileSystemEventArgs e)
         {
-            LoadAssembly(Path.GetFileName(e.Name));
+            lock (this)
+            {
+                loadQueue.Add(Path.GetFileName(e.Name));
+            }
         }
 
         private void OnFileChanged(object sender, FileSystemEventArgs e)
@@ -69,13 +78,19 @@ namespace ModAPI.Plugins
 
             var fileName = Path.GetFileName(e.Name);
 
-            UnloadAssembly(fileName);
-            LoadAssembly(fileName);
+            lock (this)
+            {
+                unloadQueue.Add(fileName);
+                loadQueue.Add(fileName);
+            }
         }
 
         private void OnFileDeleted(object sender, FileSystemEventArgs e)
         {
-            UnloadAssembly(Path.GetFileName(e.Name));
+            lock (this)
+            {
+                unloadQueue.Add(Path.GetFileName(e.Name));
+            }
         }
 
         private void LoadPlugins()
@@ -89,77 +104,77 @@ namespace ModAPI.Plugins
         private void LoadAssembly(string name)
         {
             lock (this)
+        {
+            string pluginName = Path.GetFileNameWithoutExtension(name);
+            string key = name.ToLowerInvariant();
+
+            if (plugins.ContainsKey(key))
+                    return;
+
+            if (key.Any(ch => ch.ToString().Trim() == string.Empty))
             {
-                string pluginName = Path.GetFileNameWithoutExtension(name);
-                string key = name.ToLowerInvariant();
-
-                if (plugins.ContainsKey(key))
+                APIHost.Logger.LogError($"Failed to load plugin {pluginName}. The file name contains whitespace.");
                     return;
+            }
 
-                if (key.Any(ch => ch.ToString().Trim() == string.Empty))
-                {
-                    APIHost.Logger.LogError($"Failed to load plugin {pluginName}. The file name contains whitespace.");
-                    return;
-                }
+            var plugin = new PluginInstance();
 
-                var plugin = new PluginInstance();
+            try
+            {
+                plugin.Assembly = Assembly.LoadFrom(Path.Combine(Options.PluginsDirectory, name));
+
+                Type pluginType;
+
 
                 try
                 {
-                    plugin.Assembly = Assembly.LoadFrom(Path.Combine(Options.PluginsDirectory, name));
-
-                    Type pluginType;
-
-                    
-                    try
-                    {
-                        pluginType = plugin.Assembly.GetExportedTypes().SingleOrDefault(TypeIsValidPlugin);
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        APIHost.Logger.LogError($"Failed to load plugin {pluginName}. It contains more than a single plugin.");
-                        return;
-                    }
-
-                    if (pluginType == null)
-                    {
-                        APIHost.Logger.LogError(
-                            $"Failed to load plugin {pluginName}. Could not find a valid plugin type. Make sure your plugin class is public and that you've added the PluginAttribute.");
-                        return;
-                    }
-                    else if (pluginType.Name != pluginName)
-                    {
-                        APIHost.Logger.LogError($"Failed to load plugin {pluginName}. The plugin class' name needs to be {pluginName}.");
-                        return;
-                    }
-
-                    var pluginAttribute = pluginType.GetCustomAttribute<PluginAttribute>();
-
-                    if (!PluginTypeHasValidAttribute(pluginAttribute))
-                    {
-                        APIHost.Logger.LogError($"Failed to load plugin {pluginName}. The reason is above this message.");
-                        return;
-                    }
-
-                    if (!PluginHasValidConstructor(pluginType))
-                    {
-                        APIHost.Logger.LogError($"Failed to load plugin {pluginName}. There is no constructor with 0 parameters.");
-                    }
-
-                    plugin.Author = pluginAttribute.Author;
-                    plugin.Name = pluginAttribute.Name;
-                    plugin.ShortDescription = pluginAttribute.ShortDescription ?? "No description available.";
-                    plugin.Version = plugin.Assembly.GetName().Version;
-                    plugin.Plugin = (Plugin) Activator.CreateInstance(pluginType);
-                    
-                    plugins.Add(key, plugin);
-                    plugin.Plugin.OnInitialize();
-
-                    APIHost.Logger.LogDebug($"Loaded plugin {plugin.Name} by {plugin.Author} ({plugin.ShortDescription}).");
+                    pluginType = plugin.Assembly.GetExportedTypes().SingleOrDefault(TypeIsValidPlugin);
                 }
-                catch (Exception ex)
+                catch (InvalidOperationException)
                 {
-                    APIHost.Logger.LogException(ex, "Failed to load plugin.");
+                    APIHost.Logger.LogError($"Failed to load plugin {pluginName}. It contains more than a single plugin.");
+                        return;
+                }
+
+                if (pluginType == null)
+                {
+                    APIHost.Logger.LogError(
+                        $"Failed to load plugin {pluginName}. Could not find a valid plugin type. Make sure your plugin class is public and that you've added the PluginAttribute.");
+                        return;
+                }
+                else if (pluginType.Name != pluginName)
+                {
+                    APIHost.Logger.LogError($"Failed to load plugin {pluginName}. The plugin class' name needs to be {pluginName}.");
+                        return;
+                }
+
+                var pluginAttribute = pluginType.GetCustomAttribute<PluginAttribute>();
+
+                if (!PluginTypeHasValidAttribute(pluginAttribute))
+                {
+                    APIHost.Logger.LogError($"Failed to load plugin {pluginName}. The reason is above this message.");
+                        return;
+                }
+
+                if (!PluginHasValidConstructor(pluginType))
+                {
+                    APIHost.Logger.LogError($"Failed to load plugin {pluginName}. There is no constructor with 0 parameters.");
+                }
+
+                plugin.Author = pluginAttribute.Author;
+                plugin.Name = pluginAttribute.Name;
+                plugin.ShortDescription = pluginAttribute.ShortDescription ?? "No description available.";
+                plugin.Version = plugin.Assembly.GetName().Version;
+                plugin.Plugin = (Plugin) Activator.CreateInstance(pluginType);
+
+                plugins.Add(key, plugin);
+                plugin.Plugin.OnInitialize();
+
+                APIHost.Logger.LogDebug($"Loaded plugin {plugin.Name} by {plugin.Author} ({plugin.ShortDescription}).");
+            }
+            catch (Exception ex)
+            {
+                APIHost.Logger.LogException(ex, "Failed to load plugin.");
                 }
             }
         }
@@ -205,39 +220,34 @@ namespace ModAPI.Plugins
 
         private void UnloadAssembly(string name, PluginDestroyReason reason = PluginDestroyReason.Unloaded)
         {
-            lock (this)
-            {
-                name = name.ToLowerInvariant();
+            name = name.ToLowerInvariant();
 
-                if (!plugins.ContainsKey(name))
-                    return;
+            if (!plugins.ContainsKey(name))
+                return;
 
-                var plugin = plugins[name];
-                plugin.Plugin.OnPluginDestroying(reason);
+            var plugin = plugins[name];
+            plugin.Plugin.OnPluginDestroying(reason);
 
-                APIHost.Logger.LogDebug($"Unloading plugin: {plugin.Name}");
-            }
+            APIHost.Logger.LogDebug($"Unloading plugin: {plugin.Name}");
         }
 
         public void OnNewScene(SceneType oldSceneType, SceneType sceneType)
         {
-            lock (this)
+            foreach (var kv in plugins)
             {
-                foreach (var kv in plugins)
-                {
-                    kv.Value.Plugin.OnNewScene(oldSceneType, sceneType);
-                }
+                kv.Value.Plugin.OnNewScene(oldSceneType, sceneType);
             }
         }
 
         internal void TickPlugins()
         {
+            ProcessPluginQueues();
+            
             foreach (var plugin in tickingPlugins)
             {
                 plugin.Tick();
             }
         }
-
         internal void EnableTicking(Plugin plugin)
         {
             if (tickingPlugins.Contains(plugin))
@@ -249,6 +259,19 @@ namespace ModAPI.Plugins
         internal void DisableTicking(Plugin plugin)
         {
             tickingPlugins.Remove(plugin);
+        }
+
+        private void ProcessPluginQueues()
+        {
+            while (unloadQueue.Count > 0)
+            {
+                UnloadAssembly(unloadQueue.Dequeue());
+            }
+
+            while (loadQueue.Count > 0)
+            {
+                LoadAssembly(loadQueue.Dequeue());
+            }
         }
     }
 }
