@@ -10,5 +10,11 @@ namespace ModAPI.Plugins
         public string ShortDescription { get; set; }
         public string Author { get; set; }
         public string[] Dependencies { get; set; }
+
+        public PluginAttribute(string name, string author)
+        {
+            Name = name;
+            Author = author;
+        }
     }
 }
