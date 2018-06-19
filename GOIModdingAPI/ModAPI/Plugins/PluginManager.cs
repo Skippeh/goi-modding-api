@@ -47,8 +47,6 @@ namespace ModAPI.Plugins
             fileWatcher.Created += OnFileCreated;
             fileWatcher.Deleted += OnFileDeleted;
             fileWatcher.Changed += OnFileChanged;
-
-            LoadPlugins();
         }
 
         internal void StartListening()
@@ -93,7 +91,7 @@ namespace ModAPI.Plugins
             }
         }
 
-        private void LoadPlugins()
+        internal void LoadPlugins()
         {
             foreach (string filePath in Directory.GetFiles(Options.PluginsDirectory))
             {

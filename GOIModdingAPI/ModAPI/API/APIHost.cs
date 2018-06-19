@@ -24,6 +24,7 @@ namespace ModAPI.API
             SceneManager.activeSceneChanged += OnNewScene;
             
             Plugins = new PluginManager();
+            Plugins.LoadPlugins();
             Plugins.StartListening();
         }
         
