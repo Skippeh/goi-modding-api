@@ -20,11 +20,11 @@ namespace ModAPI.API
                 LogToConsole = true
             });
             
-            Plugins = new PluginManager();
-            Plugins.StartListening();
-            
             Application.logMessageReceived += OnLogMessageReceived;
             SceneManager.activeSceneChanged += OnNewScene;
+            
+            Plugins = new PluginManager();
+            Plugins.StartListening();
         }
         
         private static void OnLogMessageReceived(string condition, string stacktrace, LogType type)
