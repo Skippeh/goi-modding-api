@@ -65,7 +65,7 @@ namespace ModAPI.Plugins
         {
             lock (this)
             {
-                loadQueue.Add(Path.GetFileName(e.Name));
+                loadQueue.Enqueue(Path.GetFileName(e.Name));
             }
         }
 
@@ -78,8 +78,8 @@ namespace ModAPI.Plugins
 
             lock (this)
             {
-                unloadQueue.Add(fileName);
-                loadQueue.Add(fileName);
+                unloadQueue.Enqueue(fileName);
+                loadQueue.Enqueue(fileName);
             }
         }
 
@@ -87,7 +87,7 @@ namespace ModAPI.Plugins
         {
             lock (this)
             {
-                unloadQueue.Add(Path.GetFileName(e.Name));
+                unloadQueue.Enqueue(Path.GetFileName(e.Name));
             }
         }
 
