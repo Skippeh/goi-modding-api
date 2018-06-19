@@ -12,6 +12,8 @@ namespace ModAPI.API
         public static Logging.Logger Logger { get; private set; }
         public static PluginManager Plugins { get; private set; }
 
+        private static APIHostComponent apiComponent;
+        
         internal static void Initialize()
         {
             Logger = new Logging.Logger(new LogOptions
@@ -22,6 +24,10 @@ namespace ModAPI.API
             
             Application.logMessageReceived += OnLogMessageReceived;
             SceneManager.activeSceneChanged += OnNewScene;
+
+            var apiObject = new GameObject("ModAPI");
+            apiComponent = apiObject.AddComponent<APIHostComponent>();
+            GameObject.DontDestroyOnLoad(apiObject);
             
             Plugins = new PluginManager();
             Plugins.LoadPlugins();
