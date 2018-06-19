@@ -7,7 +7,7 @@ namespace ModAPI.Plugins
     {
         public abstract bool ShouldTick { get; }
 
-        protected event SceneChangedEventHandler SceneChanged;
+        public event SceneChangedEventHandler SceneChanged;
         
         public virtual void Initialize()
         {
