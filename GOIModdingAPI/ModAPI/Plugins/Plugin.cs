@@ -9,13 +9,18 @@ namespace ModAPI.Plugins
 
         public event SceneChangedEventHandler SceneChanged;
         
-        public virtual void Initialize()
+        protected virtual void Initialize()
         {
         }
 
         internal void OnNewScene(SceneType oldSceneType, SceneType sceneType)
         {
             SceneChanged?.Invoke(new SceneChangedEventArgs(oldSceneType, sceneType));
+        }
+
+        internal void OnInitialize()
+        {
+            Initialize();
         }
 
         public virtual void Tick()

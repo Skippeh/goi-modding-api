@@ -151,7 +151,7 @@ namespace ModAPI.Plugins
                     plugin.Plugin = (Plugin) Activator.CreateInstance(pluginType);
                     
                     plugins.Add(key, plugin);
-                    plugin.Plugin.Initialize();
+                    plugin.Plugin.OnInitialize();
 
                     APIHost.Logger.LogDebug($"Loaded plugin {plugin.Name} by {plugin.Author} ({plugin.ShortDescription}).");
                 }
