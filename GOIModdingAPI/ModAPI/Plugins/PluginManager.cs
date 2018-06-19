@@ -237,9 +237,20 @@ namespace ModAPI.Plugins
                 return;
 
             var plugin = plugins[name];
-            plugin.Plugin.OnPluginDestroying(reason);
 
-            APIHost.Logger.LogDebug($"Unloading plugin: {plugin.Name}");
+            try
+            {
+                plugin.Plugin.OnPluginDestroying(reason);
+            }
+            catch (Exception ex)
+            {
+                APIHost.Logger.LogException(ex, $"An exception was raised while destroying plugin {plugin.Name}.");
+            }
+
+            DisableTicking(plugin.Plugin);
+            plugins.Remove(name);
+
+            APIHost.Logger.LogDebug($"Unloaded plugin: {plugin.Name}");
         }
 
         public void OnNewScene(SceneType oldSceneType, SceneType sceneType)
