@@ -40,7 +40,7 @@ namespace ModAPI.Plugins
         {
         }
 
-        internal void OnNewScene(SceneType oldSceneType, SceneType sceneType)
+        internal void OnNewScene(SceneType? oldSceneType, SceneType sceneType)
         {
             SceneChanged?.Invoke(new SceneChangedEventArgs(oldSceneType, sceneType));
         }

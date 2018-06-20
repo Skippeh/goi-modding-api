@@ -6,10 +6,10 @@ namespace ModAPI.Plugins.Events
     
     public class SceneChangedEventArgs : System.EventArgs
     {
-        public SceneType OldSceneType { get; }
+        public SceneType? OldSceneType { get; }
         public SceneType SceneType { get; }
         
-        public SceneChangedEventArgs(SceneType oldSceneType, SceneType sceneType)
+        public SceneChangedEventArgs(SceneType? oldSceneType, SceneType sceneType)
         {
             OldSceneType = oldSceneType;
             SceneType = sceneType;
