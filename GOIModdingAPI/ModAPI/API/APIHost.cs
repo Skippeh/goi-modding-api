@@ -63,7 +63,7 @@ namespace ModAPI.API
         
         private static void OnNewScene(Scene oldScene, Scene newScene)
         {
-            //Interface.CallHook("OnSceneChanged", GetSceneType(newScene), newScene);
+            Plugins.OnNewScene(oldScene != default(Scene) ? GetSceneType(oldScene) : (SceneType?) null, GetSceneType(newScene));
         }
 
         private static SceneType GetSceneType(Scene newScene)
