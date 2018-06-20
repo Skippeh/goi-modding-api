@@ -3,6 +3,7 @@ branches:
   only:
   - master
   - development
+  - appveyor
 image: Visual Studio 2017
 configuration: Release
 platform: Any CPU
@@ -10,3 +11,8 @@ clone_depth: 1
 build:
   verbosity: minimal
 deploy: off
+environment:
+  steam_username:
+    secure: kPfBMCQjIS7TuG8N78xUGw==
+  steam_password:
+    5L2WCCTom2qq75qIOEvujL4VqJWr10IRBzH6AwSQA9k=
