@@ -53,7 +53,7 @@ $devVarsXml = [xml]@'
 </Project>
 '@
 
-$devVarsXml.xml.Project.PropertyGroup.GameDirectory = (Get-Item -Path "../GOIModdingAPI").FullName
+$devVarsXml.Project.PropertyGroup.GameDirectory = (Get-Item -Path "../GOIModdingAPI").FullName
 $xmlSaveDirectory = (Get-Item -Path "../GOIModdingAPI").FullName
 $xmlSavePath = [io.Path]::Combine($xmlSaveDirectory, "DevVars.targets")
 $devVarsXml.Save($xmlSavePath);
