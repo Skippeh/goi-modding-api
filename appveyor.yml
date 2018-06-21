@@ -23,4 +23,4 @@ install:
   - cmd: dotnet restore
 after_build:
   - cmd: cd ../../appveyor
-  - ps: .\after-build.ps1
+  - ps: .\before-package.ps1
