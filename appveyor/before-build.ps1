@@ -14,7 +14,7 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem
 
 $DepotDownloaderUrl = "https://github.com/SteamRE/DepotDownloader/releases/download/DepotDownloader_2.3.0/depotdownloader-2.3.0-hotfix1.zip"
 [Net.ServicePointManager]::ServerCertificateValidationCallback = {$true}
-[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
+[Net.ServicePointManager]::SecurityProtocol = "Ssl3, Tls, Tls11, Tls12"
 $WebClient = New-Object System.Net.WebClient
 
 if (Test-Path "./depotdownloader") {
