@@ -26,12 +26,10 @@ foreach ($filePath in $DistFiles) {
     
     # Create directory if it doesn't exist
     if ((Test-Path -Path $distFilePathDirectory) -eq $false) {
-        Write-Host "Creating directory ${$distFilePathDirectory}"
         New-Item -ItemType Directory -Force -Path $distFilePathDirectory
     }
 
     $sourceFile = [Io.Path]::Combine($GameDirectory, $filePath)
-    Write-Host "Copying to dist: ${$sourceFile}"
     Copy-Item $sourceFile -Destination $distFilePath
 }
 
