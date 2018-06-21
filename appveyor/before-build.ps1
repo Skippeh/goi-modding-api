@@ -57,3 +57,5 @@ $devVarsXml.Project.PropertyGroup.GameDirectory = (Get-Item -Path "../GOIModding
 $xmlSaveDirectory = (Get-Item -Path "../GOIModdingAPI").FullName
 $xmlSavePath = [io.Path]::Combine($xmlSaveDirectory, "DevVars.targets")
 $devVarsXml.Save($xmlSavePath);
+
+Write-Host "Saved DevVars.target: $($devVarsXml.ToString())"
