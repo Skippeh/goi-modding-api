@@ -21,3 +21,6 @@ install:
   - ps: .\before-build.ps1 -steam_username $env:steam_username -steam_password $env:steam_password
   - cmd: cd ../GOIModdingAPI/Patcher/
   - cmd: dotnet restore
+after_build:
+  - cmd: cd appveyor
+  - ps: .\after-build.ps1
