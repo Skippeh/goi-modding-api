@@ -19,7 +19,9 @@ if (Test-Path $DistDirectory) {
 # Create dist directory and copy files to it
 New-Item -ItemType Directory -Force -Path $DistDirectory
 
-foreach ($filePath in $DistFiles) {
+#foreach ($filePath in $DistFiles) {
+for ($i = 0; $i -lt $DistFiles.Length; $++i) {
+    $filePath = $DistFiles[$i]
     $distFilePathDirectory = [Io.Path]::GetDirectoryName($filePath)
     $distFileName = [Io.Path]::GetFileName($filePath)
     
