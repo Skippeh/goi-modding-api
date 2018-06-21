@@ -15,4 +15,4 @@ environment:
   steam_username:
     secure: kPfBMCQjIS7TuG8N78xUGw==
   steam_password:
-    5L2WCCTom2qq75qIOEvujL4VqJWr10IRBzH6AwSQA9k=
+    secure: 5L2WCCTom2qq75qIOEvujL4VqJWr10IRBzH6AwSQA9k=
