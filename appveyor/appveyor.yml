@@ -9,7 +9,7 @@ configuration: Release
 platform: Any CPU
 clone_depth: 1
 build:
-  verbosity: minimal
+  verbosity: detailed
 deploy: off
 environment:
   steam_username:
@@ -17,4 +17,4 @@ environment:
   steam_password:
     secure: 5L2WCCTom2qq75qIOEvujL4VqJWr10IRBzH6AwSQA9k=
 install:
-  - ps: .\before-build.ps1
+  - ps: .\before-build.ps1 -steam_username $env:steam_username -steam_password $env:steam_password
