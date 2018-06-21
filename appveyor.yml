@@ -3,6 +3,7 @@ branches:
   only:
   - master
   - development
+  - appveyor
 image: Visual Studio 2017
 configuration: Release
 platform: Any CPU
@@ -10,3 +11,19 @@ clone_depth: 1
 build:
   verbosity: minimal
 deploy: off
+environment:
+  steam_username:
+    secure: kPfBMCQjIS7TuG8N78xUGw==
+  steam_password:
+    secure: 5L2WCCTom2qq75qIOEvujL4VqJWr10IRBzH6AwSQA9k=
+install:
+  - cmd: cd appveyor
+  - ps: .\before-build.ps1 -steam_username $env:steam_username -steam_password $env:steam_password
+  - cmd: cd ../GOIModdingAPI/Patcher/
+  - cmd: dotnet restore
+after_build:
+  - cmd: cd ../../appveyor
+  - ps: .\before-package.ps1
+artifacts:
+  - path: dist
+    name: goimodapi
