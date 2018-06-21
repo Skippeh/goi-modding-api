@@ -28,6 +28,7 @@ foreach ($filePath in $DistFiles) {
         New-Item -ItemType Directory -Force -Path $distFilePathDirectory
     }
 
+    Write-Host "Copying ${$filePath} to dist"
     Copy-Item $filePath -Destination [Io.Path]::Combine($distFilePathDirectory, $distFileName)
 }
 
