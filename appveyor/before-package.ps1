@@ -2,7 +2,7 @@ $GameDirectory = "./game_files"
 $PatcherBin = "../GOIModdingAPI/Patcher/bin/Release/netcoreapp2.0/Patcher.dll"
 $DistDirectory  ="../dist"
 
-$DistFiles = @(
+[string[]] $DistFiles = @(
     "GettingOverIt_Data/Managed/Assembly-CSharp.dll",
     "GettingOverIt_Data/Managed/0Harmony.dll",
     "GettingOverIt_Data/Managed/ModAPI.dll"
@@ -19,9 +19,7 @@ if (Test-Path $DistDirectory) {
 # Create dist directory and copy files to it
 New-Item -ItemType Directory -Force -Path $DistDirectory
 
-#foreach ($filePath in $DistFiles) {
-for ($i = 0; $i -lt $DistFiles.Length; $++i) {
-    $filePath = $DistFiles[$i]
+foreach ($filePath in $DistFiles) {
     $distFilePathDirectory = [Io.Path]::GetDirectoryName($filePath)
     $distFileName = [Io.Path]::GetFileName($filePath)
     
