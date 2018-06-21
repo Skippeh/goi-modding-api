@@ -20,7 +20,7 @@ if (Test-Path $DistDirectory) {
 New-Item -ItemType Directory -Force -Path $DistDirectory
 
 foreach ($filePath in $DistFiles) {
-    $distFilePathDirectory = [Io.Path]::GetDirectoryName($filePath)
+    $distFilePathDirectory = [Io.Path]::Combine($DistDirectory, [Io.Path]::GetDirectoryName($filePath))
     $distFileName = [Io.Path]::GetFileName($filePath)
     
     # Create directory if it doesn't exist
