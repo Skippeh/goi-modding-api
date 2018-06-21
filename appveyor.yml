@@ -9,7 +9,7 @@ configuration: Release
 platform: Any CPU
 clone_depth: 1
 build:
-  verbosity: detailed
+  verbosity: minimal
 deploy: off
 environment:
   steam_username:
