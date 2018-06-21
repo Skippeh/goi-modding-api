@@ -17,7 +17,7 @@ if (Test-Path $DistDirectory) {
 }
 
 # Create dist directory and copy files to it
-New-Item -ItemType Directory -Force -Path $DistDirectory
+New-Item -ItemType Directory -Force -Path $DistDirectory | Out-Null
 
 foreach ($filePath in $DistFiles) {
     $distFilePathDirectory = [Io.Path]::Combine($DistDirectory, [Io.Path]::GetDirectoryName($filePath))
@@ -26,7 +26,7 @@ foreach ($filePath in $DistFiles) {
     
     # Create directory if it doesn't exist
     if ((Test-Path -Path $distFilePathDirectory) -eq $false) {
-        New-Item -ItemType Directory -Force -Path $distFilePathDirectory
+        New-Item -ItemType Directory -Force -Path $distFilePathDirectory | Out-Null
     }
 
     $sourceFile = [Io.Path]::Combine($GameDirectory, $filePath)

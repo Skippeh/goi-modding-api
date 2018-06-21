@@ -21,7 +21,7 @@ if (Test-Path "./depotdownloader") {
     Remove-Item -Recurse -Path "./depotdownloader"
 }
 
-New-Item -ItemType Directory -Force -Path "./depotdownloader"
+New-Item -ItemType Directory -Force -Path "./depotdownloader" | Out-Null
 
 Write-Host "Downloading and extracting DepotDownloader"
 
