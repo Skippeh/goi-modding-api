@@ -26,3 +26,4 @@ after_build:
   - ps: .\before-package.ps1
 artifacts:
   - path: dist
+  - name: goimodapi-{version}
