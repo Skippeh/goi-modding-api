@@ -24,3 +24,5 @@ install:
 after_build:
   - cmd: cd ../../appveyor
   - ps: .\before-package.ps1
+artifacts:
+  - dist
