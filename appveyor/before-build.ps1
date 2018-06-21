@@ -18,7 +18,7 @@ $DepotDownloaderUrl = "https://github.com/SteamRE/DepotDownloader/releases/downl
 $WebClient = New-Object System.Net.WebClient
 
 if (Test-Path "./depotdownloader") {
-Remove-Item -Recurse -Path "./depotdownloader"
+    Remove-Item -Recurse -Path "./depotdownloader"
 }
 
 New-Item -ItemType Directory -Force -Path "./depotdownloader"
@@ -43,3 +43,17 @@ catch {
 Write-Host "Downloading game files"
 
 dotnet "./depotdownloader/depotdownloader.dll" -username $steam_username -password $steam_password -app $AppId -filelist filelist.txt -os windows -depot $DepotId -dir $DownloadDirectory
+
+$devVarsXml = [xml]@'
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <GameDirectory></GameDirectory>
+    </PropertyGroup>
+</Project>
+'@
+
+$devVarsXml.xml.Project.PropertyGroup.GameDirectory = (Get-Item -Path "../GOIModdingAPI").FullName
+$xmlSaveDirectory = (Get-Item -Path "../GOIModdingAPI").FullName
+$xmlSavePath = [io.Path]::Combine($xmlSaveDirectory, "DevVars.targets")
+$devVarsXml.Save($xmlSavePath);
