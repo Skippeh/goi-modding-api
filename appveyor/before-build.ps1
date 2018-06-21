@@ -17,7 +17,10 @@ $DepotDownloaderUrl = "https://github.com/SteamRE/DepotDownloader/releases/downl
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
 $WebClient = New-Object System.Net.WebClient
 
+if (Test-Path "./depotdownloader") {
 Remove-Item -Recurse -Path "./depotdownloader"
+}
+
 New-Item -ItemType Directory -Force -Path "./depotdownloader"
 
 Write-Host "Downloading and extracting DepotDownloader"
