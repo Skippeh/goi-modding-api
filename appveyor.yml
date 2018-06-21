@@ -19,3 +19,7 @@ environment:
 install:
   - cmd: cd appveyor
   - ps: .\before-build.ps1 -steam_username $env:steam_username -steam_password $env:steam_password
+  - cmd: cd ../../GOIModdingAPI/Patcher/
+  - cmd: dotnet restore
+  - cmd: cd ../ModAPI
+  - cmd: nuget restore
