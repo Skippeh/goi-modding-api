@@ -22,6 +22,7 @@ New-Item -ItemType Directory -Force -Path $DistDirectory
 foreach ($filePath in $DistFiles) {
     $distFilePathDirectory = [Io.Path]::Combine($DistDirectory, [Io.Path]::GetDirectoryName($filePath))
     $distFileName = [Io.Path]::GetFileName($filePath)
+    $distFilePath = [Io.Path]::Combine($distFilePathDirectory, $distFileName)
     
     # Create directory if it doesn't exist
     if ((Test-Path -Path $distFilePathDirectory) -eq $false) {
@@ -29,8 +30,9 @@ foreach ($filePath in $DistFiles) {
         New-Item -ItemType Directory -Force -Path $distFilePathDirectory
     }
 
-    Write-Host "Copying ${$filePath} to dist"
-    Copy-Item $filePath -Destination [Io.Path]::Combine($distFilePathDirectory, $distFileName)
+    $sourceFile = [Io.Path]::Combine($GameDirectory, $filePath)
+    Write-Host "Copying to dist: ${$sourceFile}"
+    Copy-Item $sourceFile -Destination $distFilePath
 }
 
 tree /F $DistDirectory # debug
