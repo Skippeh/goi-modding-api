@@ -26,7 +26,7 @@ namespace SamplePlugin
 
         protected override void Destroy()
         {
-            APIHost.Events.SceneChanged -= OnSceneChanged;
+            APIHost.Events.SceneChanged -= OnSceneChanged; // Unsubscribe all previously subscribed events when the plugin is being destroyed
         }
 
         private void OnSceneChanged(SceneChangedEventArgs args)
