@@ -23,6 +23,8 @@ namespace ModAPI.API
                 LogToConsole = true
             });
             
+            Events = new GameEvents();
+            
             Application.logMessageReceived += OnLogMessageReceived;
             SceneManager.activeSceneChanged += OnNewScene;
 
