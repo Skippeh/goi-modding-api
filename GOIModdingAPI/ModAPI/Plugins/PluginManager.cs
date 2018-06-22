@@ -176,7 +176,7 @@ namespace ModAPI.Plugins
                 plugins.Add(key, plugin);
                 plugin.Plugin.OnInitialize();
 
-                APIHost.Logger.LogDebug($"Loaded plugin {plugin.Name} by {plugin.Author} ({plugin.ShortDescription}).");
+                APIHost.Logger.LogDebug($"Loaded plugin {plugin.Name} v{plugin.Version} by {plugin.Author} ({plugin.ShortDescription}).");
                 return plugin;
             }
             catch (FileNotFoundException)
@@ -251,7 +251,7 @@ namespace ModAPI.Plugins
             DisableTicking(plugin.Plugin);
             plugins.Remove(name);
 
-            APIHost.Logger.LogDebug($"Unloaded plugin: {plugin.Name}");
+            APIHost.Logger.LogDebug($"Unloaded plugin: {plugin.Name} v{plugin.Version}");
         }
 
         internal void OnNewScene(SceneType? oldSceneType, SceneType sceneType)
