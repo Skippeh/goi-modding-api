@@ -1,4 +1,6 @@
-﻿using ModAPI.API;
+﻿using System;
+using ModAPI.API;
+using ModAPI.API.Events;
 using ModAPI.Plugins;
 
 namespace SamplePlugin
@@ -8,7 +10,18 @@ namespace SamplePlugin
     {
         protected override void Initialize()
         {
-            APIHost.Logger.LogDebug("SamplePlugin initializing");
+            APIHost.Events.SceneChanged += OnSceneChanged;
+            APIHost.Logger.LogDebug("SamplePlugin initialized");
+        }
+
+        protected override void Destroy()
+        {
+            APIHost.Events.SceneChanged -= OnSceneChanged;
+        }
+
+        private void OnSceneChanged(SceneChangedEventArgs args)
+        {
+            APIHost.Logger.LogDebug($"OnSceneChanged, new scene: {args.SceneType}");
         }
     }
 }
