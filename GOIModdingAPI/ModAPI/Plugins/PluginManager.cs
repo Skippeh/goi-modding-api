@@ -113,8 +113,9 @@ namespace ModAPI.Plugins
 
             try
             {
-                plugin.Assembly = Assembly.LoadFrom(Path.Combine(Options.PluginsDirectory, name));
-
+                var bytes = File.ReadAllBytes(Path.Combine(Options.PluginsDirectory, name));
+                plugin.Assembly = Assembly.Load(bytes);
+                
                 Type pluginType;
 
                 try
