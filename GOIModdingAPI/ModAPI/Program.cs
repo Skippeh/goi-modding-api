@@ -14,9 +14,7 @@ namespace ModAPI
         public static void Main()
         {
             InitializeConsole();
-
             
-
             APIHost.Initialize();
             
             try
