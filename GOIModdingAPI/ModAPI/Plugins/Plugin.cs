@@ -1,6 +1,5 @@
 ﻿using ModAPI.API;
 using ModAPI.Plugins.Events;
-using ModAPI.Types;
 
 namespace ModAPI.Plugins
 {
@@ -25,7 +24,6 @@ namespace ModAPI.Plugins
             }
         }
 
-        public event SceneChangedEventHandler SceneChanged;
         public event PluginDestroyingEventHandler PluginDestroying;
         
         protected virtual void Initialize()
@@ -38,11 +36,6 @@ namespace ModAPI.Plugins
 
         protected virtual void Tick()
         {
-        }
-
-        internal void OnNewScene(SceneType? oldSceneType, SceneType sceneType)
-        {
-            SceneChanged?.Invoke(new SceneChangedEventArgs(oldSceneType, sceneType));
         }
 
         internal void OnPluginDestroying(PluginDestroyReason reason)

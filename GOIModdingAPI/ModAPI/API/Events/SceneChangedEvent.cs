@@ -1,6 +1,6 @@
 ﻿using ModAPI.Types;
 
-namespace ModAPI.Plugins.Events
+namespace ModAPI.API.Events
 {
     public delegate void SceneChangedEventHandler(SceneChangedEventArgs args);
     

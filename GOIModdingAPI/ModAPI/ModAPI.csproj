@@ -258,6 +258,7 @@
     <Compile Include="API\APIHostComponent.cs" />
     <Compile Include="API\Events\LoadingSaveEvent.cs" />
     <Compile Include="API\Events\SavingEvent.cs" />
+    <Compile Include="API\Events\SceneChangedEvent.cs" />
     <Compile Include="API\GameEvents.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Logging\LogLevel.cs" />
@@ -265,7 +266,6 @@
     <Compile Include="Patches\LoadingSavePatch.cs" />
     <Compile Include="Patches\SavingGamePatch.cs" />
     <Compile Include="Plugins\Events\PluginDestroyingEvent.cs" />
-    <Compile Include="Plugins\Events\SceneChangedEvent.cs" />
     <Compile Include="Plugins\Plugin.cs" />
     <Compile Include="Plugins\PluginAttribute.cs" />
     <Compile Include="Plugins\PluginDestroyReason.cs" />

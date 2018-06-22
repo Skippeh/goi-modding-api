@@ -254,12 +254,9 @@ namespace ModAPI.Plugins
             APIHost.Logger.LogDebug($"Unloaded plugin: {plugin.Name} v{plugin.Version}");
         }
 
-        internal void OnNewScene(SceneType? oldSceneType, SceneType sceneType)
+        internal void OnNewScene(SceneType? oldSceneType, SceneType newSceneType)
         {
-            foreach (var kv in plugins)
-            {
-                kv.Value.Plugin.OnNewScene(oldSceneType, sceneType);
-            }
+            APIHost.Events.OnNewScene(oldSceneType, newSceneType);
         }
 
         internal void Tick()
