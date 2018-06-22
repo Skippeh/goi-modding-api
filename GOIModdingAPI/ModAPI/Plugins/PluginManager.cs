@@ -27,7 +27,7 @@ namespace ModAPI.Plugins
 
         private Queue<string> loadQueue = new Queue<string>();
         private Queue<string> unloadQueue = new Queue<string>();
-        
+
         public PluginManager(PluginOptions options)
         {
             Options = options;
@@ -114,7 +114,17 @@ namespace ModAPI.Plugins
             try
             {
                 var bytes = File.ReadAllBytes(Path.Combine(Options.PluginsDirectory, name));
-                plugin.Assembly = Assembly.Load(bytes);
+                
+                string symbolFilePath = Path.Combine(Options.PluginsDirectory, Path.ChangeExtension(name, ".pdb"));
+                byte[] symbolBytes = null;
+
+                if (File.Exists(symbolFilePath))
+                {
+                    APIHost.Logger.LogDebug("Found pdb, loading symbols");
+                    symbolBytes = File.ReadAllBytes(symbolFilePath);
+                }
+                
+                plugin.Assembly = Assembly.Load(bytes, symbolBytes);
                 
                 Type pluginType;
 
