@@ -89,7 +89,7 @@ namespace ModAPI.Plugins
 
         internal void LoadPlugins()
         {
-            foreach (string filePath in Directory.GetFiles(Options.PluginsDirectory))
+            foreach (string filePath in Directory.GetFiles(Options.PluginsDirectory, "*.dll"))
             {
                 LoadAssembly(Path.GetFileName(filePath));
             }
