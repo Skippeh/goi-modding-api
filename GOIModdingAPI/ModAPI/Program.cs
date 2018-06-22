@@ -14,11 +14,20 @@ namespace ModAPI
         public static void Main()
         {
             InitializeConsole();
+
             
-            var harmony = HarmonyInstance.Create("com.goimodapi");
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
 
             APIHost.Initialize();
+            
+            try
+            {
+                var harmony = HarmonyInstance.Create("com.goimodapi");
+                harmony.PatchAll(Assembly.GetExecutingAssembly());
+            }
+            catch (Exception ex)
+            {
+                APIHost.Logger.LogException(ex, "Failed to apply all runtime patches!");
+            }
         }
 
         private static void InitializeConsole()
