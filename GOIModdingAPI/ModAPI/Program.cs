@@ -10,9 +10,16 @@ namespace ModAPI
     internal class Program
     {
         private static StreamWriter consoleWriter;
+
+        private static bool initialized;
         
         public static void Main()
         {
+            if (initialized)
+                return;
+
+            initialized = true;
+            
             InitializeConsole();
             
             APIHost.Initialize();
