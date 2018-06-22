@@ -9,9 +9,9 @@ namespace ModAPI.Patches
     [HarmonyPatch(new[] {typeof(SaveState)})]
     internal static class LoadingSavePatch
     {
-        private static void Prefix(SaveState saveState)
+        private static void Prefix(SaveState loadedSave)
         {
-            APIHost.Events.OnLoadingSave(saveState);
+            APIHost.Events.OnLoadingSave(loadedSave);
         }
     }
 }
