@@ -14,6 +14,8 @@ namespace SamplePlugin
         protected override void Initialize()
         {
             APIHost.Events.SceneChanged += OnSceneChanged;
+
+            ShouldTick = true; // Needs to be called in order for the Tick method to be invoked
             
             // Apply all harmony hooks in this assembly
             var harmonyInstance = HarmonyInstance.Create("com.sampleplugin");
