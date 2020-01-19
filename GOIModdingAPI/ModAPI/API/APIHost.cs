@@ -22,6 +22,9 @@ namespace ModAPI.API
                 LogDirectory = "Logs",
                 LogToConsole = true
             });
+
+            Logger.LogInfo($"Unity Version: {Application.unityVersion}");
+            Logger.LogInfo($"Game Version: {Application.version}");
             
             Events = new GameEvents();
 
