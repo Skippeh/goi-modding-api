@@ -13,20 +13,34 @@ namespace SamplePlugin
     {
         protected override void Initialize()
         {
-            APIHost.Events.SceneChanged += OnSceneChanged;
+            InitializeHook(() =>
+            {
+                // Subscribe to SceneChanged event
+                APIHost.Events.SceneChanged += OnSceneChanged;
+                
+                // This action is called when the plugin is being destroyed. Undo any changes
+                return () =>
+                {
+                    APIHost.Events.SceneChanged -= OnSceneChanged;
+                };
+            });
 
             ShouldTick = true; // Needs to be called in order for the Tick method to be invoked
             
-            // Apply all harmony hooks in this assembly
-            var harmonyInstance = HarmonyInstance.Create("com.sampleplugin");
-            harmonyInstance.PatchAll(Assembly.GetExecutingAssembly());
+            InitializeHook(() =>
+            {
+                // Apply all harmony hooks in this assembly
+                var harmonyInstance = HarmonyInstance.Create("com.sampleplugin");
+                harmonyInstance.PatchAll(Assembly.GetExecutingAssembly());
+
+                return () =>
+                {
+                    // Remove all patches when the plugin is being destroyed
+                    harmonyInstance.UnpatchAll("com.sampleplugin");
+                };
+            });
 
             APIHost.Logger.LogDebug("SamplePlugin initialized");
-        }
-
-        protected override void Destroy()
-        {
-            APIHost.Events.SceneChanged -= OnSceneChanged; // Unsubscribe all previously subscribed events when the plugin is being destroyed
         }
 
         private void OnSceneChanged(SceneChangedEventArgs args)
@@ -44,7 +58,7 @@ namespace SamplePlugin
         private static void Postfix()
         {
             Physics2D.gravity *= 0.1f; // 10% gravity
-            Physics.gravity = Physics2D.gravity; // Will make particle effects have the same gravity
+            Physics.gravity *= 0.1f; // Will make particle effects have the same gravity
         }
     }
 }
