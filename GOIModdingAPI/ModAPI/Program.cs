@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Harmony;
 using ModAPI.API;
@@ -19,9 +20,12 @@ namespace ModAPI
                 return;
 
             initialized = true;
-            
-            InitializeConsole();
-            
+
+            if (Environment.GetCommandLineArgs().Any(line => line.ToLowerInvariant() == "--console"))
+            {
+                InitializeConsole();
+            }
+
             APIHost.Initialize();
             
             try
