@@ -24,7 +24,7 @@ namespace ModAPI.API
             });
             
             Events = new GameEvents();
-            
+
             Application.logMessageReceived += OnLogMessageReceived;
             SceneManager.activeSceneChanged += OnNewScene;
 
@@ -40,6 +40,11 @@ namespace ModAPI.API
             });
             Plugins.LoadPlugins();
             Plugins.StartListening();
+        }
+
+        internal static void OnApplicationQuit()
+        {
+            Plugins.UnloadAllPlugins();
         }
         
         private static void OnLogMessageReceived(string condition, string stacktrace, LogType type)

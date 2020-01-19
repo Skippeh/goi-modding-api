@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace ModAPI.API
 {
@@ -7,6 +8,11 @@ namespace ModAPI.API
         private void Update()
         {
             APIHost.Plugins.Tick();
+        }
+
+        private void OnApplicationQuit()
+        {
+            APIHost.OnApplicationQuit();
         }
     }
 }
