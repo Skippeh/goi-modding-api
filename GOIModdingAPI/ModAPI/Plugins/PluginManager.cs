@@ -25,10 +25,10 @@ namespace ModAPI.Plugins
         private readonly Dictionary<string, PluginInstance> plugins = new Dictionary<string, PluginInstance>();
         private readonly List<Plugin> tickingPlugins = new List<Plugin>();
 
-        private Queue<string> loadQueue = new Queue<string>();
-        private Queue<string> unloadQueue = new Queue<string>();
+        private readonly Queue<string> loadQueue = new Queue<string>();
+        private readonly Queue<string> unloadQueue = new Queue<string>();
 
-        public PluginManager(PluginOptions options)
+        internal PluginManager(PluginOptions options)
         {
             Options = options;
 
@@ -37,7 +37,8 @@ namespace ModAPI.Plugins
 
             fileWatcher = new FileSystemWatcher(Options.PluginsDirectory)
             {
-                Filter = "*.dll"
+                Filter = "*.dll",
+                IncludeSubdirectories = true
             };
 
             fileWatcher.Created += OnFileCreated;
@@ -50,7 +51,7 @@ namespace ModAPI.Plugins
             fileWatcher.EnableRaisingEvents = true;
             APIHost.Logger.LogDebug($"Started listening for plugin changes in \"{Path.GetFullPath(Options.PluginsDirectory)}\".");
         }
-
+        
         internal void StopListening()
         {
             fileWatcher.EnableRaisingEvents = false;
@@ -89,15 +90,31 @@ namespace ModAPI.Plugins
 
         internal void LoadPlugins()
         {
-            foreach (string filePath in Directory.GetFiles(Options.PluginsDirectory, "*.dll"))
+            foreach (string directoryPath in Directory.GetDirectories(Options.PluginsDirectory))
             {
-                LoadAssembly(Path.GetFileName(filePath));
+                LoadPlugin(directoryPath);
             }
+        }
+
+        private bool LoadPlugin(string directoryPath)
+        {
+            string filePath = Path.Combine(directoryPath, Path.GetFileName(directoryPath) + ".dll");
+
+            APIHost.Logger.LogDebug($"Loading plugin: {filePath}");
+
+            if (!File.Exists(filePath))
+            {
+                APIHost.Logger.LogError($"Could not find plugin assembly file: {filePath}");
+                return false;
+            }
+
+            return LoadAssembly(Path.GetFileName(filePath)) != null;
         }
 
         private PluginInstance LoadAssembly(string name)
         {
             string pluginName = Path.GetFileNameWithoutExtension(name);
+            string filePath = Path.Combine(Path.Combine(Options.PluginsDirectory, pluginName), pluginName) + ".dll";
             string key = name.ToLowerInvariant();
 
             if (plugins.ContainsKey(key))
@@ -109,13 +126,16 @@ namespace ModAPI.Plugins
                 return null;
             }
 
-            var plugin = new PluginInstance();
+            var plugin = new PluginInstance
+            {
+                DirectoryPath = Path.GetDirectoryName(filePath)
+            };
 
             try
             {
-                var bytes = File.ReadAllBytes(Path.Combine(Options.PluginsDirectory, name));
-                
-                string symbolFilePath = Path.Combine(Options.PluginsDirectory, Path.ChangeExtension(name, ".pdb"));
+                var bytes = File.ReadAllBytes(filePath);
+
+                string symbolFilePath = Path.ChangeExtension(filePath, ".pdb");
                 byte[] symbolBytes = null;
 
                 if (File.Exists(symbolFilePath))
@@ -144,7 +164,8 @@ namespace ModAPI.Plugins
                         $"Failed to load plugin {pluginName}. Could not find a valid plugin type. Make sure your plugin class is public and that you've added the PluginAttribute.");
                     return null;
                 }
-                else if (pluginType.Name != pluginName)
+
+                if (pluginType.Name != pluginName)
                 {
                     APIHost.Logger.LogError($"Failed to load plugin {pluginName}. The plugin's class name needs to be {pluginName}.");
                     return null;
@@ -165,11 +186,12 @@ namespace ModAPI.Plugins
 
                 if (pluginAttribute.Dependencies?.Length > 0)
                 {
-                    APIHost.Logger.LogDebug($"Loading {pluginAttribute.Dependencies.Length} dependant plugin{(pluginAttribute.Dependencies.Length == 1 ? "" : "s")}...");
+                    int numDeps = pluginAttribute.Dependencies.Length;
+                    APIHost.Logger.LogDebug($"Loading {numDeps} dependant plugin{(numDeps == 1 ? "" : "s")}...");
 
                     foreach (string dependency in pluginAttribute.Dependencies)
                     {
-                        if (LoadAssembly(dependency) == null)
+                        if (!LoadPlugin(dependency))
                         {
                             APIHost.Logger.LogError($"Failed to load plugin {pluginName}. A dependant plugin failed to load.");
                             return null;
@@ -240,7 +262,7 @@ namespace ModAPI.Plugins
             return type.GetConstructor(new Type[0]) != null;
         }
 
-        private void UnloadAssembly(string name, PluginDestroyReason reason = PluginDestroyReason.Unloaded)
+        private void UnloadPlugin(string name, PluginDestroyReason reason = PluginDestroyReason.Unloaded)
         {
             name = name.ToLowerInvariant();
 
@@ -291,11 +313,19 @@ namespace ModAPI.Plugins
             tickingPlugins.Remove(plugin);
         }
 
+        internal void UnloadAllPlugins()
+        {
+            foreach (var pluginName in plugins.Keys.ToList())
+            {
+                UnloadPlugin(pluginName);
+            }
+        }
+
         private void ProcessPluginQueues()
         {
             while (unloadQueue.Count > 0)
             {
-                UnloadAssembly(unloadQueue.Dequeue());
+                UnloadPlugin(unloadQueue.Dequeue());
             }
 
             while (loadQueue.Count > 0)

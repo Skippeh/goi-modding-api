@@ -268,7 +268,7 @@
       <ModAPIFiles Include="$(TargetDir)SamplePlugin.dll" />
       <ModAPIFiles Include="$(TargetDir)SamplePlugin.pdb" />
     </ItemGroup>
-    <Copy SourceFiles="@(ModAPIFiles)" DestinationFiles="@(ModAPIFiles->'$(GameDirectory)\Plugins\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(ModAPIFiles)" DestinationFiles="@(ModAPIFiles->'$(GameDirectory)\Plugins\SamplePlugin\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)/DevVars.targets" />
