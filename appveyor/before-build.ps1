@@ -58,4 +58,5 @@ $devVarsXml.Save($xmlSavePath);
 
 Write-Host "Saved DevVars.target:`n$($devVarsXml.OuterXml)"
 
-dotnet restore ../GOIModdingAPI
+Write-Host "Restoring nuget packages..."
+nuget restore ../GOIModdingAPI
