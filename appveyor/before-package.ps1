@@ -6,7 +6,9 @@ $DistDirectory  ="../dist"
     "GettingOverIt_Data/Managed/Assembly-CSharp.dll",
     "GettingOverIt_Data/Managed/0Harmony.dll",
     "GettingOverIt_Data/Managed/ModAPI.dll"
-    "GettingOverIt_Data/Managed/ModAPI.pdb"
+    "GettingOverIt_Data/Managed/ModAPI.pdb",
+    "GettingOverIt_Data/Managed/ModAPI.Dependencies.dll",
+    "GettingOverIt_Data/Managed/ModAPI.Dependencies.pdb"
 )
 
 # Patch game assembly
