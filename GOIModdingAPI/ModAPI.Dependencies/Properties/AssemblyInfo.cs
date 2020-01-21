@@ -1,16 +1,15 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
-using ModAPI.Plugins;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SamplePlugin")]
+[assembly: AssemblyTitle("ModAPI.Dependencies")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SamplePlugin")]
-[assembly: AssemblyCopyright("Copyright ©  2018")]
+[assembly: AssemblyProduct("ModAPI.Dependencies")]
+[assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +19,7 @@ using ModAPI.Plugins;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("F7B745FA-0581-4CF5-BFD4-49BC397AA086")]
+[assembly: Guid("35370EB7-22D3-43BC-8946-D78B96E128E5")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -34,4 +33,3 @@ using ModAPI.Plugins;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: ModAPIVersion("^1.0.0")]

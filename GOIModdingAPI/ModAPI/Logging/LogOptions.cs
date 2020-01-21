@@ -4,5 +4,6 @@
     {
         public bool LogToConsole { get; set; }
         public string LogDirectory { get; set; }
+        public LogLevel MinLogLevel { get; internal set; }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using ModAPI.Logging;
 using ModAPI.Plugins;
+using ModAPI.SemanticVersioning;
 using ModAPI.Types;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -20,10 +22,11 @@ namespace ModAPI.API
             Logger = new Logging.Logger(new LogOptions
             {
                 LogDirectory = "Logs",
-                LogToConsole = true
+                LogToConsole = true,
+                MinLogLevel = Environment.GetCommandLineArgs().Any(line => line.ToLowerInvariant() == "--debug") ? LogLevel.Debug : LogLevel.Info
             });
 
-            Logger.LogInfo($"Unity Version: {Application.unityVersion}");
+            Logger.LogDebug($"Unity Version: {Application.unityVersion}");
             Logger.LogInfo($"Game Version: {Application.version}");
             
             Events = new GameEvents();
@@ -31,7 +34,7 @@ namespace ModAPI.API
             Application.logMessageReceived += OnLogMessageReceived;
             SceneManager.activeSceneChanged += OnNewScene;
 
-            Application.runInBackground = true; // Without this plugin hotloading could be unpredictable in certain cases.
+            Application.runInBackground = true; // Without this, plugin hotloading could be unpredictable in certain cases.
 
             var apiObject = new GameObject("ModAPI");
             apiComponent = apiObject.AddComponent<APIHostComponent>();

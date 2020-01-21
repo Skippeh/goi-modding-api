@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Patcher", "Patcher\Patcher.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SamplePlugin", "SamplePlugin\SamplePlugin.csproj", "{F7B745FA-0581-4CF5-BFD4-49BC397AA086}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModAPI.Dependencies", "ModAPI.Dependencies\ModAPI.Dependencies.csproj", "{35370EB7-22D3-43BC-8946-D78B96E128E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{F7B745FA-0581-4CF5-BFD4-49BC397AA086}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7B745FA-0581-4CF5-BFD4-49BC397AA086}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7B745FA-0581-4CF5-BFD4-49BC397AA086}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35370EB7-22D3-43BC-8946-D78B96E128E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35370EB7-22D3-43BC-8946-D78B96E128E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35370EB7-22D3-43BC-8946-D78B96E128E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35370EB7-22D3-43BC-8946-D78B96E128E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

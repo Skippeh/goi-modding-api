@@ -1,9 +1,9 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using Harmony;
 using ModAPI.API;
 using ModAPI.API.Events;
 using ModAPI.Plugins;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace SamplePlugin
@@ -17,16 +17,13 @@ namespace SamplePlugin
             {
                 // Subscribe to SceneChanged event
                 APIHost.Events.SceneChanged += OnSceneChanged;
-                
+
                 // This action is called when the plugin is being destroyed. Undo any changes
-                return () =>
-                {
-                    APIHost.Events.SceneChanged -= OnSceneChanged;
-                };
+                return () => { APIHost.Events.SceneChanged -= OnSceneChanged; };
             });
 
             ShouldTick = true; // Needs to be called in order for the Tick method to be invoked
-            
+
             InitializeHook(() =>
             {
                 // Apply all harmony hooks in this assembly
@@ -40,6 +37,8 @@ namespace SamplePlugin
                 };
             });
 
+            var test = JsonConvert.SerializeObject(new {test = 1});
+            APIHost.Logger.LogDebug(test);
             APIHost.Logger.LogDebug("SamplePlugin initialized");
         }
 

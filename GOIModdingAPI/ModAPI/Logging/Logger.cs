@@ -79,6 +79,9 @@ namespace ModAPI.Logging
 
         private void Log(object message, LogLevel logLevel)
         {
+            if (logLevel < Options.MinLogLevel)
+                return;
+            
             lock (this)
             {
                 string strMessage = message.ToString();

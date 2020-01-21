@@ -11,12 +11,15 @@ using I2.Loc;
 using ModAPI.API;
 using ModAPI.Logging;
 using ModAPI.Plugins.Events;
+using ModAPI.SemanticVersioning;
 using ModAPI.Types;
 
 namespace ModAPI.Plugins
 {
     public sealed class PluginManager
     {
+        private static readonly SemVersion APIVersion = new SemVersion(Assembly.GetExecutingAssembly().GetName().Version);
+        
         public List<PluginInstance> Plugins => plugins.Values.ToList();
         
         internal PluginOptions Options { get; private set; }
@@ -96,11 +99,11 @@ namespace ModAPI.Plugins
             }
         }
 
-        private bool LoadPlugin(string directoryPath)
+        private bool LoadPlugin(string directoryPath, string requiredVersion = null)
         {
             string filePath = Path.Combine(directoryPath, Path.GetFileName(directoryPath) + ".dll");
 
-            APIHost.Logger.LogDebug($"Loading plugin: {filePath}");
+            APIHost.Logger.LogInfo($"Loading plugin: {filePath}");
 
             if (!File.Exists(filePath))
             {
@@ -108,10 +111,17 @@ namespace ModAPI.Plugins
                 return false;
             }
 
-            return LoadAssembly(Path.GetFileName(filePath)) != null;
+            var pluginInstance = LoadAssembly(Path.GetFileName(filePath), requiredVersion);
+
+            if (pluginInstance == null)
+            {
+                AssemblyDependencyManager.RemoveSearchDirectory(directoryPath);
+            }
+            
+            return pluginInstance != null;
         }
 
-        private PluginInstance LoadAssembly(string name)
+        private PluginInstance LoadAssembly(string name, string requiredVersion = null)
         {
             string pluginName = Path.GetFileNameWithoutExtension(name);
             string filePath = Path.Combine(Path.Combine(Options.PluginsDirectory, pluginName), pluginName) + ".dll";
@@ -143,8 +153,23 @@ namespace ModAPI.Plugins
                     APIHost.Logger.LogDebug("Found pdb, loading symbols");
                     symbolBytes = File.ReadAllBytes(symbolFilePath);
                 }
-                
+
                 plugin.Assembly = Assembly.Load(bytes, symbolBytes);
+                AssemblyDependencyManager.AddSearchDirectory(plugin.DirectoryPath);
+
+                var requiredModApiVersionAttribute = (ModAPIVersionAttribute) plugin.Assembly.GetCustomAttributes(typeof(ModAPIVersionAttribute), false).FirstOrDefault();
+
+                if (requiredModApiVersionAttribute == null)
+                {
+                    APIHost.Logger.LogError($"Failed to load plugin {pluginName}. Could not find assembly attribute ModAPIVersion.");
+                    return null;
+                }
+                
+                if (!APIVersion.DependencyMatches(requiredModApiVersionAttribute.Version))
+                {
+                    APIHost.Logger.LogError($"Failed to load plugin {pluginName}. It depends on an incompatible version of the mod api ({requiredModApiVersionAttribute.Version}).");
+                    return null;
+                }
                 
                 Type pluginType;
 
@@ -191,7 +216,17 @@ namespace ModAPI.Plugins
 
                     foreach (string dependency in pluginAttribute.Dependencies)
                     {
-                        if (!LoadPlugin(dependency))
+                        if (!dependency.Contains("@"))
+                        {
+                            APIHost.Logger.LogError($"A dependency has an invalid format, could not find '@' after plugin name. ({dependency})");
+                            continue;
+                        }
+                        
+                        string[] dependencyAndVersion = dependency.Split('@');
+                        string dependencyName = dependencyAndVersion[0];
+                        string dependencyVersion = dependencyAndVersion[1];
+                        
+                        if (!LoadPlugin(dependencyName, dependencyVersion))
                         {
                             APIHost.Logger.LogError($"Failed to load plugin {pluginName}. A dependant plugin failed to load.");
                             return null;
@@ -202,13 +237,21 @@ namespace ModAPI.Plugins
                 plugin.Author = pluginAttribute.Author;
                 plugin.Name = pluginAttribute.Name;
                 plugin.ShortDescription = pluginAttribute.ShortDescription ?? "No description available.";
-                plugin.Version = plugin.Assembly.GetName().Version;
+                plugin.Version = new SemVersion(plugin.Assembly.GetName().Version);
+
+                if (requiredVersion != null && !plugin.Version.DependencyMatches(requiredVersion))
+                {
+                    APIHost.Logger.LogError($"Could not load plugin '{pluginName}@{requiredVersion}'. The installed plugin version is {plugin.Version}.");
+                    return null;
+                }
+
+                AssemblyDependencyManager.LoadDependencies(plugin.Assembly, plugin.DirectoryPath);
                 plugin.Plugin = (Plugin) Activator.CreateInstance(pluginType);
 
                 plugins.Add(key, plugin);
                 plugin.Plugin.OnInitialize();
 
-                APIHost.Logger.LogDebug($"Loaded plugin {plugin.Name} v{plugin.Version} by {plugin.Author} ({plugin.ShortDescription}).");
+                APIHost.Logger.LogInfo($"Loaded plugin {plugin.Name} v{plugin.Version} by {plugin.Author} ({plugin.ShortDescription}).");
                 return plugin;
             }
             catch (FileNotFoundException ex)
@@ -282,8 +325,9 @@ namespace ModAPI.Plugins
 
             DisableTicking(plugin.Plugin);
             plugins.Remove(name);
+            AssemblyDependencyManager.RemoveSearchDirectory(plugin.DirectoryPath);
 
-            APIHost.Logger.LogDebug($"Unloaded plugin: {plugin.Name} v{plugin.Version}");
+            APIHost.Logger.LogInfo($"Unloaded plugin: {plugin.Name} v{plugin.Version}");
         }
 
         internal void OnNewScene(SceneType? oldSceneType, SceneType newSceneType)
