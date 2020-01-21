@@ -58,4 +58,4 @@ $devVarsXml.Save($xmlSavePath);
 
 Write-Host "Saved DevVars.target:`n$($devVarsXml.OuterXml)"
 
-dotnet restore (Get-Item -Path "../GOIModdingAPI").FullName
+dotnet restore ../GOIModdingAPI
