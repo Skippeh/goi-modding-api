@@ -57,3 +57,5 @@ $xmlSavePath = [io.Path]::Combine($xmlSaveDirectory, "DevVars.targets")
 $devVarsXml.Save($xmlSavePath);
 
 Write-Host "Saved DevVars.target:`n$($devVarsXml.OuterXml)"
+
+dotnet restore (Get-Item -Path "../GOIModdingAPI").FullName
