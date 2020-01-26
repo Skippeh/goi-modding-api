@@ -7,7 +7,7 @@ namespace ModAPI.API
     {
         private void Update()
         {
-            APIHost.Plugins.Tick();
+            APIHost.Update();
         }
 
         private void OnApplicationQuit()

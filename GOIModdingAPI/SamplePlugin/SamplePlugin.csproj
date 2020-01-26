@@ -262,6 +262,10 @@
     <Compile Include="SamplePlugin.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ModAPI.UI\ModAPI.UI.csproj">
+      <Project>{b6e2ff56-21ba-44b2-a245-572cd2337f1f}</Project>
+      <Name>ModAPI.UI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ModAPI\ModAPI.csproj">
       <Project>{1f911935-4d17-42f1-b32a-0357191509e5}</Project>
       <Name>ModAPI</Name>

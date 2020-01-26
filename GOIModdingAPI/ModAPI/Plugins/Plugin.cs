@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using ModAPI.API;
 using ModAPI.Plugins.Events;
+using ModAPI.UI;
 
 namespace ModAPI.Plugins
 {
@@ -37,6 +38,11 @@ namespace ModAPI.Plugins
                 throw new InvalidOperationException("InitializeHook can only be called from the Initialize method.");
             
             unInitializeEventHandlers.Add(eventHandlers());
+        }
+
+        protected FullscreenBrowserInstance CreateFullscreenUI(string url)
+        {
+            return UIHost.CreateFullscreenBrowser(url);
         }
         
         protected virtual void Initialize()

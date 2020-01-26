@@ -4,6 +4,7 @@ using ModAPI.Logging;
 using ModAPI.Plugins;
 using ModAPI.SemanticVersioning;
 using ModAPI.Types;
+using ModAPI.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -51,6 +52,7 @@ namespace ModAPI.API
         internal static void OnApplicationQuit()
         {
             Plugins.UnloadAllPlugins();
+            UIHost.Destroy();
         }
         
         private static void OnLogMessageReceived(string condition, string stacktrace, LogType type)
@@ -93,6 +95,12 @@ namespace ModAPI.API
                     Logger.LogError($"Unknown scene loaded: \"{newScene.name}\"");
                     return SceneType.Invalid;
             }
+        }
+
+        public static void Update()
+        {
+            Plugins.Tick();
+            UIHost.Update();
         }
     }
 }

@@ -3,6 +3,7 @@ using Harmony;
 using ModAPI.API;
 using ModAPI.API.Events;
 using ModAPI.Plugins;
+using ModAPI.UI;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -36,9 +37,16 @@ namespace SamplePlugin
                     harmonyInstance.UnpatchAll("com.sampleplugin");
                 };
             });
-
+            
             var test = JsonConvert.SerializeObject(new {test = 1});
             APIHost.Logger.LogDebug(test);
+
+            InitializeHook(() =>
+            {
+                var uiTest = CreateFullscreenUI("https://www.google.com");
+                return () => { uiTest.Dispose(); };
+            });
+            
             APIHost.Logger.LogDebug("SamplePlugin initialized");
         }
 

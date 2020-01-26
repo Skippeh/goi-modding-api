@@ -54,7 +54,6 @@
     <Reference Include="UnityEngine.AccessibilityModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>$(GameDirectory)\GettingOverIt_data\Managed\UnityEngine.AccessibilityModule.dll</HintPath>
       <Private>False</Private>
-      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.AIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>$(GameDirectory)\GettingOverIt_data\Managed\UnityEngine.AIModule.dll</HintPath>
@@ -291,6 +290,10 @@
       <Project>{35370eb7-22d3-43bc-8946-d78b96e128e5}</Project>
       <Name>ModAPI.Dependencies</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ModAPI.UI\ModAPI.UI.csproj">
+      <Project>{b6e2ff56-21ba-44b2-a245-572cd2337f1f}</Project>
+      <Name>ModAPI.UI</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -302,6 +305,9 @@
       <ModAPIFiles Include="$(TargetDir)ModAPI.pdb" />
       <ModAPIFiles Include="$(TargetDir)ModAPI.Dependencies.dll" />
       <ModAPIFiles Include="$(TargetDir)ModAPI.Dependencies.pdb" />
+      <ModAPIFiles Include="$(TargetDir)ModAPI.UI.dll" />
+      <ModAPIFiles Include="$(TargetDir)ModAPI.UI.pdb" />
+      <ModAPIFiles Include="$(SolutionDir)..\CefGlue\**\*.*" />
     </ItemGroup>
     <Copy SourceFiles="@(ModAPIFiles)" DestinationFiles="@(ModAPIFiles->'$(GameDirectory)\GettingOverIt_Data\Managed\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>

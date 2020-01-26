@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SamplePlugin", "SamplePlugi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModAPI.Dependencies", "ModAPI.Dependencies\ModAPI.Dependencies.csproj", "{35370EB7-22D3-43BC-8946-D78B96E128E5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModAPI.UI", "ModAPI.UI\ModAPI.UI.csproj", "{B6E2FF56-21BA-44B2-A245-572CD2337F1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModAPI.UI.SubProcess", "ModAPI.UI.SubProcess\ModAPI.UI.SubProcess.csproj", "{1F8F57BF-EF61-400A-A382-3330AA5FB2EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{35370EB7-22D3-43BC-8946-D78B96E128E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35370EB7-22D3-43BC-8946-D78B96E128E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35370EB7-22D3-43BC-8946-D78B96E128E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6E2FF56-21BA-44B2-A245-572CD2337F1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6E2FF56-21BA-44B2-A245-572CD2337F1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6E2FF56-21BA-44B2-A245-572CD2337F1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6E2FF56-21BA-44B2-A245-572CD2337F1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F8F57BF-EF61-400A-A382-3330AA5FB2EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F8F57BF-EF61-400A-A382-3330AA5FB2EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F8F57BF-EF61-400A-A382-3330AA5FB2EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F8F57BF-EF61-400A-A382-3330AA5FB2EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

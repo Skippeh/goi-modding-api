@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Harmony;
 using ModAPI.API;
+using ModAPI.UI;
 using ModAPI.Windows;
 
 namespace ModAPI
@@ -25,7 +26,8 @@ namespace ModAPI
             {
                 InitializeConsole();
             }
-
+            
+            UIHost.Initialize();
             APIHost.Initialize();
             
             try
