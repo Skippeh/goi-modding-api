@@ -20,13 +20,25 @@ namespace ModAPI.UI
         private Vector2 windowSize;
         private bool disposing;
 
-        public FullscreenBrowserInstance()
+        public FullscreenBrowserInstance(Color? backgroundColor = null)
         {
             windowSize = new Vector2(Screen.width, Screen.height);
             texture = new Texture2D(Screen.width, Screen.height, TextureFormat.BGRA32, false);
 
             Client = new OffScreenClient(texture.width, texture.height);
             var browserSettings = new CefBrowserSettings();
+
+            if (backgroundColor != null)
+            {
+                var bgValue = backgroundColor.Value;
+                browserSettings.BackgroundColor = new CefColor(
+                    (byte) (bgValue.a * 255),
+                    (byte) (bgValue.r * 255),
+                    (byte) (bgValue.g * 255),
+                    (byte) (bgValue.b * 255)
+                );
+            }
+            
             var windowSettings = CefWindowInfo.Create();
             windowSettings.SetAsWindowless(IntPtr.Zero, transparent: true);
             Browser = CefBrowserHost.CreateBrowserSync(windowSettings, Client, browserSettings, "about:blank");

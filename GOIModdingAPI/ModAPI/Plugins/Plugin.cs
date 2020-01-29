@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ModAPI.API;
 using ModAPI.Plugins.Events;
 using ModAPI.UI;
+using UnityEngine;
 
 namespace ModAPI.Plugins
 {
@@ -43,6 +44,12 @@ namespace ModAPI.Plugins
         protected FullscreenBrowserInstance CreateFullscreenUI(string url)
         {
             return UIHost.CreateFullscreenBrowser(url);
+        }
+
+        /// <param name="defaultBackgroundColor">The background color to use if the page doesn't specify one. Default value is transparent.</param>
+        protected FullscreenBrowserInstance CreateFullscreenUI(string url, Color defaultBackgroundColor)
+        {
+            return UIHost.CreateFullscreenBrowser(url, defaultBackgroundColor);
         }
         
         protected virtual void Initialize()

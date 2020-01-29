@@ -4,6 +4,7 @@ using System.Linq;
 using ModAPI.UI.CEF;
 using ModAPI.UI.Cursor;
 using ModAPI.UI.Win32Input;
+using UnityEngine;
 using Xilium.CefGlue;
 
 namespace ModAPI.UI
@@ -65,6 +66,14 @@ namespace ModAPI.UI
         public static FullscreenBrowserInstance CreateFullscreenBrowser(string url)
         {
             var instance = new FullscreenBrowserInstance();
+            browsers.Add(instance);
+            instance.LoadUrl(url);
+            return instance;
+        }
+
+        public static FullscreenBrowserInstance CreateFullscreenBrowser(string url, Color defaultBackgroundColor)
+        {
+            var instance = new FullscreenBrowserInstance(defaultBackgroundColor);
             browsers.Add(instance);
             instance.LoadUrl(url);
             return instance;
