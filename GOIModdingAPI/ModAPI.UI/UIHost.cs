@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ModAPI.UI.CEF;
+using ModAPI.UI.Win32Input;
 using Xilium.CefGlue;
 
 namespace ModAPI.UI
@@ -28,6 +29,7 @@ namespace ModAPI.UI
             };
             
             CefRuntime.Initialize(cefArgs, settings, cefApp, IntPtr.Zero);
+            WindowInputHook.HookRawInput();
         }
 
         public static void Update()
@@ -42,6 +44,8 @@ namespace ModAPI.UI
 
         public static void Destroy()
         {
+            WindowInputHook.UnHook();
+            
             foreach (var browser in browsers.ToList())
             {
                 DestroyBrowser(browser);

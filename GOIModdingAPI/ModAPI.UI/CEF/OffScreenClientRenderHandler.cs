@@ -49,7 +49,7 @@ namespace ModAPI.UI.CEF
 
         protected override void OnCursorChange(CefBrowser browser, IntPtr cursorHandle, CefCursorType type, CefCursorInfo customCursorInfo)
         {
-            
+            Debug.Log($"Cursor change: {type}");
         }
 
         protected override void OnScrollOffsetChanged(CefBrowser browser, double x, double y)

@@ -11,30 +11,6 @@ namespace ModAPI.UI
 {
     public class FullscreenBrowserInstance : IBrowserInstance
     {
-        private class BrowserInstanceComponent : MonoBehaviour
-        {
-            public FullscreenBrowserInstance BrowserInstance;
-            public OffScreenClient OffScreenClient;
-            public Texture2D TextureTarget;
-
-            private void OnGUI()
-            {
-                if (Event.current.type == EventType.Repaint)
-                {
-                    OffScreenClient.LoadToTexture(TextureTarget);
-                    GL.PushMatrix();
-                    GL.LoadOrtho();
-                    Graphics.DrawTexture(new Rect(0, 0, 1, 1), TextureTarget);
-                    GL.PopMatrix();
-                }
-            }
-
-            private void OnDestroy()
-            {
-                BrowserInstance.Dispose();
-            }
-        }
-        
         internal OffScreenClient Client { get; private set; }
         internal CefBrowser Browser { get; private set; }
 
