@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ModAPI.UI.CEF;
+using ModAPI.UI.Cursor;
 using ModAPI.UI.Win32Input;
 using Xilium.CefGlue;
 
@@ -40,6 +41,13 @@ namespace ModAPI.UI
             }
             
             CefRuntime.DoMessageLoopWork();
+            
+            // It's necessary to call this every frame because unity sets the cursor to the one specified in UnityEngine.Cursor every time a mouse event is sent if the mouse is visible.
+            // The UnityEngine.Cursor is not used by the game so it's ok to override it.
+            if (UnityEngine.Cursor.visible)
+            {
+                CursorManager.Update();
+            }
         }
 
         public static void Destroy()

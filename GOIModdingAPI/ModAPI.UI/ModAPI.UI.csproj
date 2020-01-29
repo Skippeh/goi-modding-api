@@ -62,6 +62,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cursor\CursorManager.cs" />
     <Compile Include="FullscreenBrowserInputManager.cs" />
     <Compile Include="BrowserInstanceComponent.cs" />
     <Compile Include="CEF\OffScreenClient.cs" />

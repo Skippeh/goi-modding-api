@@ -44,5 +44,8 @@ namespace ModAPI.UI.Win32Input
 
         [DllImport("user32.dll")]
         public static extern bool ClientToScreen(IntPtr hWnd, ref Int32POINT lpPoint);
+        
+        [DllImport("user32.dll")]
+        public static extern IntPtr SetCursor(IntPtr handle);
     }
 }

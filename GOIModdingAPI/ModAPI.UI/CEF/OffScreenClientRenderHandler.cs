@@ -1,5 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
+using ModAPI.UI.Cursor;
+using ModAPI.UI.Win32Input;
 using UnityEngine;
 using Xilium.CefGlue;
 
@@ -49,7 +51,13 @@ namespace ModAPI.UI.CEF
 
         protected override void OnCursorChange(CefBrowser browser, IntPtr cursorHandle, CefCursorType type, CefCursorInfo customCursorInfo)
         {
-            Debug.Log($"Cursor change: {type}");
+            CursorManager.CurrentCursorHandle = cursorHandle;
+
+            if (UnityEngine.Cursor.visible)
+            {
+                // This is also called every frame. It's necessary because unity sets the cursor to the one specified in UnityEngine.Cursor every time a mouse event is sent if the mouse is visible.
+                CursorManager.Update();
+            }
         }
 
         protected override void OnScrollOffsetChanged(CefBrowser browser, double x, double y)
