@@ -218,8 +218,8 @@ namespace ModAPI.UI.Win32Input
                     {
                         lastClick.ClickCount += 1;
 
-                        if (lastClick.ClickCount > 2)
-                            lastClick.ClickCount = 1; // Reset to 1 if triple clicking
+                        if (lastClick.ClickCount > 3)
+                            lastClick.ClickCount = 1; // Reset to 1 if clicking more than 3 times
                     }
                     else
                     {
