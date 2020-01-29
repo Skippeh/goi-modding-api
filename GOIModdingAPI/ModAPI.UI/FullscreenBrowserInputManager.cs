@@ -1,6 +1,8 @@
 using System;
 using ModAPI.UI.CEF;
 using ModAPI.UI.Win32Input;
+using ModAPI.UI.Win32Input.Enums;
+using ModAPI.UI.Win32Input.EventData;
 using UnityEngine;
 using Xilium.CefGlue;
 

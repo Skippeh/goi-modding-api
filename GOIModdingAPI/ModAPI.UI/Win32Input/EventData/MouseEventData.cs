@@ -1,7 +1,8 @@
+using ModAPI.UI.Win32Input.Data;
 using UnityEngine;
 using Xilium.CefGlue;
 
-namespace ModAPI.UI.Win32Input
+namespace ModAPI.UI.Win32Input.EventData
 {
     internal class MouseEventData
     {

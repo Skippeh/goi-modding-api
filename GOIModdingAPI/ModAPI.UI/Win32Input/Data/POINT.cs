@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace ModAPI.UI.Win32Input
+namespace ModAPI.UI.Win32Input.Data
 {
     [StructLayout(LayoutKind.Sequential)]
     internal struct POINT

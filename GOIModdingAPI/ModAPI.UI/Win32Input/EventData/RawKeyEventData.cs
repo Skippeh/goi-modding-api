@@ -1,4 +1,6 @@
-namespace ModAPI.UI.Win32Input
+using ModAPI.UI.Win32Input.Enums;
+
+namespace ModAPI.UI.Win32Input.EventData
 {
     internal class RawKeyEventData
     {

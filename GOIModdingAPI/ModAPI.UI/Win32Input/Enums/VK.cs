@@ -1,4 +1,4 @@
-namespace ModAPI.UI.Win32Input
+namespace ModAPI.UI.Win32Input.Enums
 {
     internal enum VK : int
     {

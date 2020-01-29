@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using ModAPI.UI.Win32Input.Data;
+using ModAPI.UI.Win32Input.Enums;
+using ModAPI.UI.Win32Input.EventData;
 using UnityEngine;
 using Xilium.CefGlue;
 

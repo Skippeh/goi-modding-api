@@ -1,7 +1,8 @@
 using System;
 using System.Runtime.InteropServices;
+using ModAPI.UI.Win32Input.Enums;
 
-namespace ModAPI.UI.Win32Input
+namespace ModAPI.UI.Win32Input.Data
 {
     [StructLayout(LayoutKind.Sequential)]
     internal struct MSG

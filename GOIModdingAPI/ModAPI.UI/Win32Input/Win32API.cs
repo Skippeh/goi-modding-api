@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using ModAPI.UI.Win32Input.Data;
+using ModAPI.UI.Win32Input.Enums;
 
 namespace ModAPI.UI.Win32Input
 {

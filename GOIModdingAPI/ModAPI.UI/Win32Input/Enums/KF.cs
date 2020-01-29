@@ -1,6 +1,6 @@
 using System;
 
-namespace ModAPI.UI.Win32Input
+namespace ModAPI.UI.Win32Input.Enums
 {
     [Flags]
     internal enum KF : int
