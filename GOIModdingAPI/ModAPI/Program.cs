@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using Harmony;
 using ModAPI.API;
 using ModAPI.UI;
@@ -27,7 +28,6 @@ namespace ModAPI
                 InitializeConsole();
             }
             
-            UIHost.Initialize();
             APIHost.Initialize();
             
             try
@@ -47,7 +47,7 @@ namespace ModAPI
             {
                 WinNative.AllocConsole();
             }
-            
+
             consoleWriter = new StreamWriter(Console.OpenStandardOutput()) {AutoFlush = true};
             Console.SetOut(consoleWriter);
         }

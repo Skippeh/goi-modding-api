@@ -283,6 +283,11 @@
     <Compile Include="SemanticVersioning\SemVersion.cs" />
     <Compile Include="Types\LayerType.cs" />
     <Compile Include="Types\SceneType.cs" />
+    <Compile Include="UI\GameUIComponent.cs" />
+    <Compile Include="UI\InGameLogic.cs" />
+    <Compile Include="UI\MainMenuLogic.cs" />
+    <Compile Include="UI\UILogic.cs" />
+    <Compile Include="Utility\UnityUtility.cs" />
     <Compile Include="Windows\WinNative.cs" />
   </ItemGroup>
   <ItemGroup>

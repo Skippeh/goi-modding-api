@@ -1,7 +1,7 @@
 using System;
 using ModAPI.UI.Win32Input;
 
-namespace ModAPI.UI.Cursor
+namespace ModAPI.UI
 {
     internal static class CursorManager
     {

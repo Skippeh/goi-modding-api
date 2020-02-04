@@ -95,7 +95,7 @@ namespace ModAPI.UI
 
         private void OnRawKey(RawKeyEventData eventData)
         {
-            if (BrowserHost == null)
+            if (BrowserHost == null || !Cursor.visible)
                 return;
             
             SendKeyEvent(eventData);
@@ -103,7 +103,7 @@ namespace ModAPI.UI
 
         private void OnRawMouseMove(MouseEventData eventData)
         {
-            if (BrowserHost == null)
+            if (BrowserHost == null || !Cursor.visible)
                 return;
 
             SendMouseMoveEvent(eventData, RawInput.GetCefMouseModifiers((uint) eventData.OriginalMessage.wParam));
@@ -111,7 +111,7 @@ namespace ModAPI.UI
 
         private void OnRawMouseDown(MouseEventData eventData)
         {
-            if (BrowserHost == null)
+            if (BrowserHost == null || !Cursor.visible)
                 return;
 
             var cefMouseModifiers = RawInput.GetCefMouseModifiers((uint) eventData.OriginalMessage.wParam);
@@ -120,7 +120,7 @@ namespace ModAPI.UI
 
         private void OnRawMouseUp(MouseEventData eventData)
         {
-            if (BrowserHost == null)
+            if (BrowserHost == null || !Cursor.visible)
                 return;
 
             SendMouseClick(eventData, RawInput.GetCefMouseModifiers((uint) eventData.OriginalMessage.wParam), false);
@@ -128,7 +128,7 @@ namespace ModAPI.UI
 
         private void OnRawMouseScroll(MouseEventData eventData)
         {
-            if (BrowserHost == null)
+            if (BrowserHost == null || !Cursor.visible)
                 return;
 
             SendScrollWheelEvent(eventData, RawInput.GetCefMouseModifiers((uint) eventData.OriginalMessage.wParam));
@@ -146,10 +146,13 @@ namespace ModAPI.UI
 
         private void OnRawXButtonUp(bool navigateForward)
         {
-            if (navigateForward)
-                BrowserHost?.GetBrowser().GoForward();
-            else
-                BrowserHost?.GetBrowser().GoBack();
+            if (Application.isFocused && Cursor.visible)
+            {
+                if (navigateForward)
+                    BrowserHost?.GetBrowser().GoForward();
+                else
+                    BrowserHost?.GetBrowser().GoBack();
+            }
         }
     }
 }

@@ -62,7 +62,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cursor\CursorManager.cs" />
+    <Compile Include="CEF\MimeTypes\MimeTypeMap.cs" />
+    <Compile Include="CEF\ProcessHandler.cs" />
+    <Compile Include="CEF\SchemeHandlerFactories\BaseResourceHandler.cs" />
+    <Compile Include="CEF\SchemeHandlerFactories\GameUiSchemeHandlerFactory.cs" />
+    <Compile Include="CEF\SchemeHandlerFactories\PluginResourceHandler.cs" />
+    <Compile Include="CEF\SchemeHandlerFactories\PluginSchemeHandlerFactory.cs" />
+    <Compile Include="CursorManager.cs" />
     <Compile Include="FullscreenBrowserInputManager.cs" />
     <Compile Include="BrowserInstanceComponent.cs" />
     <Compile Include="CEF\OffScreenClient.cs" />

@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.InteropServices;
-using ModAPI.UI.Cursor;
 using ModAPI.UI.Win32Input;
 using UnityEngine;
 using Xilium.CefGlue;

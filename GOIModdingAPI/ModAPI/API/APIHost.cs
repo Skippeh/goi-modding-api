@@ -17,6 +17,7 @@ namespace ModAPI.API
         public static GameEvents Events { get; private set; }
 
         private static APIHostComponent apiComponent;
+        private static GameUIComponent uiComponent;
         
         internal static void Initialize()
         {
@@ -40,6 +41,8 @@ namespace ModAPI.API
             var apiObject = new GameObject("ModAPI");
             apiComponent = apiObject.AddComponent<APIHostComponent>();
             GameObject.DontDestroyOnLoad(apiObject);
+            
+            UIHost.Initialize();
 
             Plugins = new PluginManager(new PluginOptions
             {
@@ -49,10 +52,24 @@ namespace ModAPI.API
             Plugins.StartListening();
         }
 
+        /// <summary>
+        /// Called from a unity component's Start method.
+        /// </summary>
+        internal static void InitializePlugins()
+        {
+            var gameUIObject = new GameObject("UI");
+            gameUIObject.transform.SetParent(apiComponent.transform);
+            uiComponent = gameUIObject.AddComponent<GameUIComponent>();
+        }
+
         internal static void OnApplicationQuit()
         {
+            APIHost.Logger.LogDebug("Unloading plugins and shutting down CEF...");
+            
             Plugins.UnloadAllPlugins();
             UIHost.Destroy();
+
+            APIHost.Logger.LogDebug("Done");
         }
         
         private static void OnLogMessageReceived(string condition, string stacktrace, LogType type)

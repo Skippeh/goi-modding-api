@@ -18,6 +18,8 @@ namespace ModAPI.UI
                 isFullscreen = true;
                 gameObject.AddComponent<FullscreenBrowserInputManager>().Client = OffScreenClient;
             }
+
+            DontDestroyOnLoad(gameObject);
         }
 
         private void OnGUI()

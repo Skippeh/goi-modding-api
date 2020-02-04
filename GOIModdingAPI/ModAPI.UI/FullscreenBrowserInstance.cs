@@ -11,6 +11,19 @@ namespace ModAPI.UI
 {
     public class FullscreenBrowserInstance : IBrowserInstance
     {
+        /// <summary>
+        /// Gets or sets whether the ui should be visible and handle input.
+        /// </summary>
+        public bool Enabled
+        {
+            get => uiObject && uiObject.activeSelf;
+            set
+            {
+                if (uiObject)
+                    uiObject.SetActive(value);
+            }
+        }
+        
         internal OffScreenClient Client { get; private set; }
         internal CefBrowser Browser { get; private set; }
 
@@ -67,9 +80,10 @@ namespace ModAPI.UI
             if (disposing)
                 return;
 
+            disposing = true;
+            
             if (uiObject)
             {
-                disposing = true;
                 UnityEngine.Object.Destroy(uiObject);
             }
 

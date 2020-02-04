@@ -77,7 +77,7 @@ namespace ModAPI.Logging
             Log(strMessage, LogLevel.Exception);
         }
 
-        private void Log(object message, LogLevel logLevel)
+        public void Log(object message, LogLevel logLevel)
         {
             if (logLevel < Options.MinLogLevel)
                 return;
