@@ -95,9 +95,20 @@ namespace ModAPI.UI
 
         private void OnRawKey(RawKeyEventData eventData)
         {
-            if (BrowserHost == null || !Cursor.visible)
+            if (BrowserHost == null)
                 return;
+
+            if (eventData.Message == WM.KEYDOWN && eventData.WindowsKeyCode == (uint) VK.F5)
+            {
+                // Refresh current page
+                Console.WriteLine("Reloading UI...");
+                BrowserHost.GetBrowser().ReloadIgnoreCache();
+                return;
+            }
             
+            if (!Cursor.visible)
+                return;
+
             SendKeyEvent(eventData);
         }
 
