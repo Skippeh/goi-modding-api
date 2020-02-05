@@ -64,8 +64,6 @@ namespace ModAPI.UI.CEF.SchemeHandlerFactories
         {
             bytesToSkip = Math.Min((int) (fileStream.Length - fileStream.Position), bytesToSkip);
             
-            Console.WriteLine($"Skip {bytesToSkip}");
-
             long oldPosition = fileStream.Position;
             long newPosition = fileStream.Seek(bytesToSkip, SeekOrigin.Current);
 
@@ -82,12 +80,10 @@ namespace ModAPI.UI.CEF.SchemeHandlerFactories
                 return false;
             }
             
-            Console.WriteLine($"Read {bytesToRead}");
-
             bytesToRead = Math.Min((int) (fileStream.Length - fileStream.Position), bytesToRead);
-
+            
             byte[] buffer = new byte[bytesToRead];
-            currentReadState = fileStream.BeginRead(buffer, (int)fileStream.Position, bytesToRead, result =>
+            currentReadState = fileStream.BeginRead(buffer, 0, bytesToRead, result =>
             {
                 Marshal.Copy(buffer, 0, dataOut, buffer.Length);
                 callback.Continue(buffer.Length);
@@ -110,9 +106,9 @@ namespace ModAPI.UI.CEF.SchemeHandlerFactories
             var uri = new Uri(urlPath);
             string filePath = uri.AbsolutePath;
 
-            if (filePath == "/")
+            if (filePath.StartsWith("/"))
             {
-                filePath = "";
+                filePath = filePath.Substring(1);
             }
             
             filePath = Path.Combine(GetRootDirectory(uri), filePath);
