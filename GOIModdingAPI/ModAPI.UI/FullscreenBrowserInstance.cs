@@ -51,6 +51,11 @@ namespace ModAPI.UI
                     (byte) (bgValue.b * 255)
                 );
             }
+
+            // This is not a constant framerate, it's more of a max framerate. The UI still only renders when it's needed.
+            // This can be overriden by using --off-screen-frame-rate=60.
+            // Default value is 30.
+            browserSettings.WindowlessFrameRate = 60;
             
             var windowSettings = CefWindowInfo.Create();
             windowSettings.SetAsWindowless(IntPtr.Zero, transparent: true);
