@@ -36,6 +36,17 @@ module.exports = {
                     "css-loader",
                     "sass-loader"
                 ]
+            },
+            {
+                test: /\.ttf$/,
+                use: [
+                    {
+                        loader: "file-loader",
+                        options: {
+                            name: "./fonts/[name].[ext]"
+                        }
+                    }
+                ]
             }
         ]
     },
