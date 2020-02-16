@@ -8,6 +8,7 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "webpack --env.environment=development --watch",
+    "dev-server": "webpack-dev-server --env.environment=development --env.devServer",
     "build": "webpack --env.environment=production"
   },
   "devDependencies": {
@@ -26,6 +27,7 @@
     "typescript": "^3.7.5",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.3",
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {

@@ -1,4 +1,6 @@
 using System;
+using ModAPI.UI.CEF.Conversion;
+using ModAPI.UI.Events;
 using UnityEngine;
 using Xilium.CefGlue;
 
@@ -18,9 +20,12 @@ namespace ModAPI.UI.CEF
         private readonly OffScreenClientLoadHandler loadHandler;
 
         internal CefBrowserHost BrowserHost;
+
+        private readonly IBrowserInstance owner;
         
-        public OffScreenClient(int width, int height)
+        public OffScreenClient(int width, int height, IBrowserInstance owner)
         {
+            this.owner = owner;
             PixelLock = new object();
             Resize(width, height);
 
@@ -32,7 +37,7 @@ namespace ModAPI.UI.CEF
         {
             if (BrowserHost == null)
                 return;
-            
+
             lock (PixelLock)
             {
                 texture.LoadRawTextureData(PixelBuffer);
@@ -65,6 +70,24 @@ namespace ModAPI.UI.CEF
                 BrowserHost.Dispose();
                 BrowserHost = null;
             }
+        }
+
+        protected override bool OnProcessMessageReceived(CefBrowser browser, CefFrame frame, CefProcessId sourceProcess, CefProcessMessage message)
+        {
+            switch (message.Name)
+            {
+                case nameof(ProcessEventType.FireEvent):
+                {
+                    string eventName = message.Arguments.GetString(0);
+                    CefValue argument = message.Arguments.GetValue(1);
+
+                    owner.EventHandler.FireEvent(eventName, argument);
+                    
+                    return true;
+                }
+            }
+            
+            return false;
         }
     }
 }

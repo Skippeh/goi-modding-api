@@ -7,8 +7,8 @@ namespace ModAPI.UI
     {
         private void Start()
         {
-            SceneManager.LoadScene("Mian", LoadSceneMode.Single);
-            return;
+            //SceneManager.LoadScene("Mian", LoadSceneMode.Single);
+            //return;
         }
     }
 }

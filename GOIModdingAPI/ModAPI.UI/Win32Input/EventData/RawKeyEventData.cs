@@ -9,6 +9,9 @@ namespace ModAPI.UI.Win32Input.EventData
         public int NativeKeyCode;
         private bool intercept;
 
+        public bool ControlDown => (Win32API.GetKeyState(VK.CONTROL) & 0x8000) > 0;
+        public bool ShiftDown => (Win32API.GetKeyState(VK.SHIFT) & 0x8000) > 0;
+
         public bool Intercept
         {
             get => intercept;

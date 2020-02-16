@@ -1,9 +1,8 @@
+using System;
 using ModAPI.API;
 using ModAPI.API.Events;
 using ModAPI.Types;
-using ModAPI.Utility;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace ModAPI.UI
 {
@@ -17,7 +16,12 @@ namespace ModAPI.UI
 
         private void Awake()
         {
+            #if DEBUG
+            Browser = UIHost.CreateFullscreenBrowser("http://localhost:9000"); // webpack dev server
+            #else
             Browser = UIHost.CreateFullscreenBrowser("modapi://gameui");
+            #endif
+            
             APIHost.Events.SceneChanged += OnSceneChanged;
             OnNewScene(SceneType.Menu);
         }

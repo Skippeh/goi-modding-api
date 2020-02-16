@@ -3,7 +3,6 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Security.Policy;
 using System.Threading;
-using ModAPI.UI.CEF.MimeTypes;
 using Xilium.CefGlue;
 
 namespace ModAPI.UI.CEF.SchemeHandlerFactories
@@ -37,7 +36,7 @@ namespace ModAPI.UI.CEF.SchemeHandlerFactories
             if (filePath == null)
                 return true;
 
-            mimeType = MimeTypeMap.GetMimeType(Path.GetExtension(filePath));
+            mimeType = CefRuntime.GetMimeType(Path.GetExtension(filePath));
             fileStream = File.OpenRead(filePath);
             return true;
         }

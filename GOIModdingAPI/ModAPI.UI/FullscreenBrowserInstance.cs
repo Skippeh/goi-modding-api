@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using ModAPI.UI.CEF;
+using ModAPI.UI.Events;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -23,6 +24,8 @@ namespace ModAPI.UI
                     uiObject.SetActive(value);
             }
         }
+
+        public UIEventHandler EventHandler { get; }
         
         internal OffScreenClient Client { get; private set; }
         internal CefBrowser Browser { get; private set; }
@@ -38,7 +41,7 @@ namespace ModAPI.UI
             windowSize = new Vector2(Screen.width, Screen.height);
             texture = new Texture2D(Screen.width, Screen.height, TextureFormat.BGRA32, false);
 
-            Client = new OffScreenClient(texture.width, texture.height);
+            Client = new OffScreenClient(texture.width, texture.height, this);
             var browserSettings = new CefBrowserSettings();
 
             if (backgroundColor != null)
@@ -60,7 +63,8 @@ namespace ModAPI.UI
             var windowSettings = CefWindowInfo.Create();
             windowSettings.SetAsWindowless(IntPtr.Zero, transparent: true);
             Browser = CefBrowserHost.CreateBrowserSync(windowSettings, Client, browserSettings, "about:blank");
-            
+            EventHandler = new UIEventHandler(Browser, this);
+
             InitializeUnityObject();
         }
 

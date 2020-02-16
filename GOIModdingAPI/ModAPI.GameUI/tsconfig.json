@@ -4,6 +4,7 @@
         "module": "CommonJS",
         "target": "ES5",
         "jsx": "react",
-        "allowJs": true
+        "allowJs": true,
+        "typeRoots": ["./typings", "./node_modules/@typings"]
     }
 }

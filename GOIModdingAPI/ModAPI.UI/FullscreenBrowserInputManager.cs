@@ -95,7 +95,7 @@ namespace ModAPI.UI
 
         private void OnRawKey(RawKeyEventData eventData)
         {
-            if (BrowserHost == null)
+            if (BrowserHost == null || !Application.isFocused)
                 return;
 
             if (eventData.Message == WM.KEYDOWN && eventData.WindowsKeyCode == (uint) VK.F5)
@@ -105,7 +105,27 @@ namespace ModAPI.UI
                 BrowserHost.GetBrowser().ReloadIgnoreCache();
                 return;
             }
-            
+
+            // CTRL+SHIFT+I to toggle developer console
+            if (eventData.Message == WM.KEYDOWN && eventData.WindowsKeyCode == (uint) VK.KEY_I && eventData.ControlDown && eventData.ShiftDown)
+            {
+                if (!BrowserHost.HasDevTools)
+                {
+                    Console.WriteLine("Opening developer console...");
+
+                    var windowInfo = CefWindowInfo.Create();
+                    var settings = new CefBrowserSettings();
+
+                    windowInfo.SetAsPopup(IntPtr.Zero, "Developer console");
+
+                    BrowserHost.ShowDevTools(windowInfo, Client, settings, new CefPoint());
+                }
+                else
+                {
+                    BrowserHost.CloseDevTools();
+                }
+            }
+
             if (!Cursor.visible)
                 return;
 

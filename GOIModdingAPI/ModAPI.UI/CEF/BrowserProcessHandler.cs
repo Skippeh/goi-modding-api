@@ -3,7 +3,7 @@ using Xilium.CefGlue;
 
 namespace ModAPI.UI.CEF
 {
-    internal class ProcessHandler : CefBrowserProcessHandler
+    internal class BrowserProcessHandler : CefBrowserProcessHandler
     {
         private readonly GameUiSchemeHandlerFactory gameUiSchemeHandlerFactory = new GameUiSchemeHandlerFactory();
         private readonly PluginSchemeHandlerFactory pluginSchemeHandlerFactory = new PluginSchemeHandlerFactory();

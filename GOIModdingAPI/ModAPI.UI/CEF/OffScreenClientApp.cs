@@ -24,7 +24,12 @@ namespace ModAPI.UI.CEF
 
         protected override CefBrowserProcessHandler GetBrowserProcessHandler()
         {
-            return new ProcessHandler();
+            return new BrowserProcessHandler();
+        }
+
+        protected override CefRenderProcessHandler GetRenderProcessHandler()
+        {
+            return new RenderProcessHandler();
         }
     }
 }

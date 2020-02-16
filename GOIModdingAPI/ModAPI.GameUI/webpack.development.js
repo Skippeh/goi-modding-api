@@ -1,3 +1,9 @@
-module.exports = {
-    devtool: "inline-source-map"
+module.exports = env => {
+    return {
+        devtool: "inline-source-map",
+        devServer: {
+            port: 9000,
+            historyApiFallback: true
+        }
+    }
 };

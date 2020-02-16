@@ -11,4 +11,11 @@ const root = (
     </Provider>
 );
 
+type TestData = {
+    a: number,
+    b: number,
+    c: string,
+    d: TestData
+};
+
 ReactDOM.render(root, document.getElementById("root"));

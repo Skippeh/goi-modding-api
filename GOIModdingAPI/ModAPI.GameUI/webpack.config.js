@@ -1,4 +1,5 @@
 const commonConfig = require("./webpack.common.js");
+const developmentConfig = require("./webpack.development.js");
 const merge = require("webpack-merge");
 
 const configs = [commonConfig];
@@ -9,10 +10,13 @@ module.exports = env =>
     console.info(`Environment: ${environment}`);
 
     if (environment == "development") {
-        configs.push(require("./webpack.development.js"));
+        console.info("Using development config");
+        configs.push(developmentConfig(env));
     }
 
-    return merge(...configs, {
+    const config = merge(...configs, {
         mode: environment,
     });
+
+    return config;
 };
